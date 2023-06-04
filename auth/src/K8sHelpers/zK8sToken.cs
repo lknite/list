@@ -30,6 +30,8 @@ namespace list.K8sHelpers
                 string claims
             )
         {
+            Console.WriteLine("zK8sToken start");
+
             // parse claims
             JsonElement o = JsonSerializer.Deserialize<JsonElement>(claims);
 
@@ -50,7 +52,6 @@ namespace list.K8sHelpers
                     token = new list.crd.token.Token()
                     {
                         email = o.GetProperty("email").ToString(),
-                        name = o.GetProperty("name").ToString(),
                         claims = claims,
                         api_key = api_key.ToString()
                     }
