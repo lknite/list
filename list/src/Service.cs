@@ -33,9 +33,14 @@ namespace list
             kubeclient = new Kubernetes(kubeconfig);
 
             // Check for required environment variable(s)
-            if (Environment.GetEnvironmentVariable("OIDC_USER_CLAIM") == null)
+            List<string> required = new List<string>();
+            required.Add("OIDC_USER_CLAIM");
+            foreach (string req in required)
             {
-                throw new Exception("Missing required environment variable: 'OIDC_USER_CLAIM'");
+                if (Environment.GetEnvironmentVariable(req) == null)
+                {
+                    throw new Exception("Missing required environment variable: '" + req + "'");
+                }
             }
         }
         public async void Start()
