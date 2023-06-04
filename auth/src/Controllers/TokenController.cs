@@ -7,7 +7,7 @@ namespace lido.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("/tradermanager/token")]
+    [Route("/auth/token")]
     [Produces("application/json")]
     public class TokenController : ControllerBase
     {
