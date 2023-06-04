@@ -45,7 +45,7 @@ namespace list.Controllers
             Console.WriteLine("Email: " + User.FindFirstValue("email"));
 
             // create a list
-            await zK8sList.Post(
+            string id = await zK8sList.Post(
                 User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")),
                 task,
                 action,
@@ -59,7 +59,10 @@ namespace list.Controllers
                 attrs
                 );
 
-            return Ok();
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            result.Add("id", id);
+
+            return Ok(result);
         }
     }
 }
