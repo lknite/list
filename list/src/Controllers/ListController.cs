@@ -39,7 +39,7 @@ namespace list.Controllers
             }
 
 
-            return Ok();
+            return Ok(result);
         }
 
 
