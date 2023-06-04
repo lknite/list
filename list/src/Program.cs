@@ -38,7 +38,7 @@ namespace list
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "lido",
+                    Title = "list",
                     Description = "",
                     TermsOfService = new Uri("https://travisloyd.xyz/terms"),
                     Contact = new OpenApiContact
@@ -182,11 +182,11 @@ namespace list
 //            {
                 app.UseSwagger(c =>
                 {
-                    c.RouteTemplate = "swagger/tradermanager/{documentName}/swagger.json";
+                    c.RouteTemplate = "swagger/list/{documentName}/swagger.json";
                 });
                 app.UseSwaggerUI(c => {
-                    c.SwaggerEndpoint("/swagger/tradermanager/v1/swagger.json", "My API V1");
-                    c.RoutePrefix = "swagger/tradermanager";
+                    c.SwaggerEndpoint("/swagger/list/v1/swagger.json", "My API V1");
+                    c.RoutePrefix = "swagger/list";
                 });
 
 
