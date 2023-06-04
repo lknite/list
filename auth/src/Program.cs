@@ -34,7 +34,7 @@ namespace lido
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "lido",
+                    Title = "list",
                     Description = "",
                     TermsOfService = new Uri("https://travisloyd.xyz/terms"),
                     Contact = new OpenApiContact
@@ -150,11 +150,11 @@ namespace lido
 //            {
                 app.UseSwagger(c =>
                 {
-                    c.RouteTemplate = "swagger/tradermanager-auth/{documentName}/swagger.json";
+                    c.RouteTemplate = "swagger/auth/{documentName}/swagger.json";
                 });
                 app.UseSwaggerUI(c => {
-                    c.SwaggerEndpoint("/swagger/tradermanager-auth/v1/swagger.json", "My API V1"); 
-                    c.RoutePrefix = "swagger/tradermanager-auth"; 
+                    c.SwaggerEndpoint("/swagger/auth/v1/swagger.json", "My API V1"); 
+                    c.RoutePrefix = "swagger/auth"; 
                 });
 
                 // This is required when developing using 'http' & 'localhost'
