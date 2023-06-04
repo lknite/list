@@ -97,13 +97,11 @@ namespace list.Controllers
 
             // only list owner is allowed to delete list
             CrdList l = await zK8sList.generic.ReadNamespacedAsync<CrdList>(Globals.service.kubeconfig.Namespace, list);
-            if (l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")))) {
-                await zK8sList.generic.DeleteNamespacedAsync<CrdList>(Globals.service.kubeconfig.Namespace, list);
-            }
-            else
-            {
+            if (!l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")))) {
                 return StatusCode(StatusCodes.Status403Forbidden);
             }
+
+            await zK8sList.generic.DeleteNamespacedAsync<CrdList>(Globals.service.kubeconfig.Namespace, list);
 
 
             return Ok();

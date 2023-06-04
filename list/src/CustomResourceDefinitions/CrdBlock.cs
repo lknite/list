@@ -25,6 +25,8 @@ namespace list.crd.block
 
     public class Block
     {
+        [JsonPropertyName("list")]
+        public string list { get; set; }
         [JsonPropertyName("owner")]
         public string owner { get; set; }
         [JsonPropertyName("index")]

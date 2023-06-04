@@ -42,8 +42,8 @@ namespace list.K8sHelpers
             // parse claims
             //JsonElement o = JsonSerializer.Deserialize<JsonElement>(claims);
 
-            // new game instance
-            var e = new list.crd.list.CrdList()
+            // new list instance
+            var l = new list.crd.list.CrdList()
             {
                 Kind = "List",
                 ApiVersion = group +"/" + version,
@@ -83,7 +83,7 @@ namespace list.K8sHelpers
             {
                 Console.WriteLine("creating CR {0}", e.Metadata.Name);
                 var response = await Globals.service.kubeclient.CustomObjects.CreateNamespacedCustomObjectWithHttpMessagesAsync(
-                    e,
+                    l,
                     group, version,
                     Globals.service.kubeconfig.Namespace,
                     plural).ConfigureAwait(false);
@@ -105,7 +105,7 @@ namespace list.K8sHelpers
             }
 
 
-            return e.Metadata.Name.ToString();
+            return l.Metadata.Name.ToString();
         }
     }
 }
