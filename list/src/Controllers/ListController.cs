@@ -2,6 +2,7 @@ using k8s;
 using k8s.Autorest;
 using k8s.Models;
 using list.crd.list;
+using list.CustomResourceDefinitions;
 using list.K8sHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ namespace list.Controllers
     public class ListController : ControllerBase
     {
         /// <summary>
-        /// asdf
+        /// get list of 'list' objects owned by user
         /// </summary>
         /// <returns></returns>
         [HttpGet()]
@@ -26,10 +27,26 @@ namespace list.Controllers
             Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
             Console.WriteLine("Email: " + User.FindFirstValue("email"));
 
+            CustomResourceList<CrdList> lists = await zK8sList.generic.ListNamespacedAsync<CustomResourceList<CrdList>>(Globals.service.kubeconfig.Namespace);
+
+            List<string> result = new List<string>();
+            foreach (CrdList l in lists.Items)
+            {
+                // only return lists owned by user
+                if (l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))) {
+                    result.Add(l.Metadata.Name);
+                }
+            }
+
 
             return Ok();
         }
 
+
+        /// <summary>
+        /// create new list
+        /// </summary>
+        /// <returns></returns>
         [HttpPost()]
         public async Task<IActionResult> Post(
                 string total,
@@ -59,6 +76,7 @@ namespace list.Controllers
                 attrs
                 );
 
+            // format object to return as json
             Dictionary<string, string> result = new Dictionary<string, string>();
             result.Add("id", id);
 
