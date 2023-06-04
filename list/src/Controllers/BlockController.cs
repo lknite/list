@@ -62,7 +62,7 @@ namespace list.Controllers
             Console.WriteLine("Email: " + User.FindFirstValue("email"));
 
             // only list owner is allowed to create a new block
-            CrdList l = await zK8sBlock.generic.ReadNamespacedAsync<CrdList>(Globals.service.kubeconfig.Namespace, list);
+            CrdList l = await zK8sList.generic.ReadNamespacedAsync<CrdList>(Globals.service.kubeconfig.Namespace, list);
             if (!l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))))
             {
                 // release semaphore lock
