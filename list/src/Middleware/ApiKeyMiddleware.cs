@@ -73,16 +73,16 @@ namespace list.Middleware
         // Used by ApiKeyAttribute & with web socket
         public static async Task<bool> IsApiKeyValid(string extractedApiKey)
         {
-            string email = string.Empty;
+            string claims = string.Empty;
             Guid guid = Guid.Parse(extractedApiKey);
 
             try
             {
                 //
-                email = await zApiToken.Identify(guid, Globals.service.kubeconfig.Namespace);
+                claims = await zApiToken.Identify(guid, Globals.service.kubeconfig.Namespace);
 
                 // if there is no error, but nothing was returned, the guid is invalid
-                if ((email.Length == 0) || (email.Length == 2)) // also watch for '{}' or '[]'
+                if ((claims.Length == 0) || (claims.Length == 2)) // also watch for '{}' or '[]'
                 {
                     return false;
                 }
