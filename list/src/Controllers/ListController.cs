@@ -78,9 +78,35 @@ namespace list.Controllers
 
             // format object to return as json
             Dictionary<string, string> result = new Dictionary<string, string>();
-            result.Add("id", id);
+            result.Add("list", id);
 
             return Ok(result);
+        }
+
+
+        /// <summary>
+        /// delete a list
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        [HttpDelete()]
+        public async Task<IActionResult> Delete(string list)
+        {
+            Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
+            Console.WriteLine("Email: " + User.FindFirstValue("email"));
+
+            // only list owner is allowed to delete list
+            CrdList l = await zK8sList.generic.ReadNamespacedAsync<CrdList>(Globals.service.kubeconfig.Namespace, list);
+            if (l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")))) {
+                await zK8sList.generic.DeleteNamespacedAsync<CrdList>(Globals.service.kubeconfig.Namespace, list);
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status403Forbidden);
+            }
+
+
+            return Ok();
         }
     }
 }
