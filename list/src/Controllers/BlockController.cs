@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 namespace list.Controllers
 {
     [ApiController]
-    [Route("list")]
+    [Route("block")]
     [Produces("application/json")]
-    public class ListController : ControllerBase
+    public class BlockController : ControllerBase
     {
         /// <summary>
         /// asdf
