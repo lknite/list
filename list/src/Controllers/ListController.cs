@@ -1,6 +1,8 @@
 using k8s;
 using k8s.Autorest;
 using k8s.Models;
+using list.crd.list;
+using list.K8sHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -29,11 +31,34 @@ namespace list.Controllers
         }
 
         [HttpPost()]
-        public async Task<IActionResult> Post()
+        public async Task<IActionResult> Post(
+                string owner,
+                string task,
+                string action,
+                string total,
+                string size,
+                int priority,
+                int timeout,
+                List<Attr> attrs
+            )
         {
             Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
             Console.WriteLine("Email: " + User.FindFirstValue("email"));
 
+            // create a list
+            await zK8sList.Post(
+                User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")),
+                task,
+                action,
+                "pending",
+                total,
+                size,
+                priority,
+                "0",
+                "0",
+                timeout,
+                attrs
+                );
 
             return Ok();
         }

@@ -36,11 +36,6 @@ namespace list.K8sHelpers
                 string complete,
                 string percent,
                 int timeout,
-                string ts_add,
-                string ts_start,
-                string ts_suspend,
-                string ts_resume,
-                string ts_complete,
                 List<Attr> attrs
             )
         {
@@ -72,11 +67,11 @@ namespace list.K8sHelpers
                         complete = complete,
                         percent = percent,
                         timeout = timeout,
-                        ts_add = ts_add,
-                        ts_start = ts_start,
-                        ts_suspend = ts_suspend,
-                        ts_resume = ts_resume,
-                        ts_complete = ts_complete,
+                        ts_add = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString(),
+                        ts_start = "",
+                        ts_suspend = "",
+                        ts_resume = "",
+                        ts_complete = "",
                         attrs = attrs
                     }
                 }
