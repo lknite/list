@@ -12,7 +12,7 @@ namespace list
 {
     public static class Globals
     {
-        //public static SemaphoreSlim semaphore = new SemaphoreSlim(1);
+        public static SemaphoreSlim semaphore = new SemaphoreSlim(1);
         public static CancellationToken cancellationToken = new CancellationToken();
 
         public static Service service = new Service();

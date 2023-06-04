@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 [module: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "CA1724:TypeNamesShouldNotMatchNamespaces", Justification = "This is just an example.")]
 [module: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1402:FileMayOnlyContainASingleClass", Justification = "This is just an example.")]
 
-namespace lido.CustomResourceDefinitions
+namespace list.CustomResourceDefinitions
 {
     public class CustomResourceDefinition
     {

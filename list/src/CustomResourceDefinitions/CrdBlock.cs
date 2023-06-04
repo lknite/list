@@ -1,9 +1,9 @@
 ﻿using k8s.Models;
 using System.Text.Json.Serialization;
 
-namespace list.crd.token
+namespace list.crd.block
 {
-    public class CrdToken : CustomResourceDefinitions.CustomResource<CrdTokenSpec, CrdTokenStatus>
+    public class CrdBlock : CustomResourceDefinitions.CustomResource<CrdBlockSpec, CrdBlockStatus>
     {
         public override string ToString()
         {
@@ -23,22 +23,26 @@ namespace list.crd.token
         }
     }
 
-    public class Token
+    public class Block
     {
-        [JsonPropertyName("email")]
-        public string email { get; set; }
-        [JsonPropertyName("claims")]
-        public string claims { get; set; }
-        [JsonPropertyName("api_key")]
-        public string api_key { get; set; }
+        [JsonPropertyName("owner")]
+        public string owner { get; set; }
+        [JsonPropertyName("index")]
+        public string index { get; set; }
+        [JsonPropertyName("size")]
+        public string size { get; set; }
+        [JsonPropertyName("state")]
+        public string state { get; set; }
+        [JsonPropertyName("when")]
+        public string when { get; set; }
     }
-    public class CrdTokenSpec
+    public class CrdBlockSpec
     {
-        [JsonPropertyName("token")]
-        public Token token { get; set; }
+        [JsonPropertyName("block")]
+        public Block block { get; set; }
     }
 
-    public class CrdTokenStatus : V1Status
+    public class CrdBlockStatus : V1Status
     {
         [JsonPropertyName("state")]
         public string state { get; set; }
