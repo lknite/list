@@ -77,11 +77,11 @@ namespace list.K8sHelpers
                 }
             };
             // debug
-            Console.WriteLine(JsonSerializer.Serialize(e, new JsonSerializerOptions { WriteIndented = true }));
+            Console.WriteLine(JsonSerializer.Serialize(l, new JsonSerializerOptions { WriteIndented = true }));
 
             try
             {
-                Console.WriteLine("creating CR {0}", e.Metadata.Name);
+                Console.WriteLine("creating CR {0}", l.Metadata.Name);
                 var response = await Globals.service.kubeclient.CustomObjects.CreateNamespacedCustomObjectWithHttpMessagesAsync(
                     l,
                     group, version,
