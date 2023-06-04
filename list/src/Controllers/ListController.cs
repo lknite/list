@@ -33,7 +33,7 @@ namespace list.Controllers
             foreach (CrdList l in lists.Items)
             {
                 // only return lists owned by user
-                if (l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))) {
+                if (l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")))) {
                     result.Add(l.Metadata.Name);
                 }
             }
