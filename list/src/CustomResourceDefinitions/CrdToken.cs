@@ -27,8 +27,6 @@ namespace lido.crd.token
     {
         [JsonPropertyName("email")]
         public string email { get; set; }
-        [JsonPropertyName("name")]
-        public string name { get; set; }
         [JsonPropertyName("claims")]
         public string claims { get; set; }
         [JsonPropertyName("api_key")]
