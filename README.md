@@ -21,4 +21,4 @@ processing, but it is an ideal implementation for simple use cases.
 ## Features ##
 - an auth microservice to gather user claims via oidc and generate an api_key
 - storing api_key and claims using a kubernetes custom resource definition
-- retrieving user claims with an api_key via rest api and websocket access
+- able to retrieve user claims when provided with an api_key via a rest method or websocket access
