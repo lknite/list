@@ -18,7 +18,7 @@ namespace list.Controllers
     public class ListController : ControllerBase
     {
         /// <summary>
-        /// get list of 'list' objects owned by user
+        /// get list of objects owned by user
         /// </summary>
         /// <returns></returns>
         [HttpGet()]
