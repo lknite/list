@@ -1,3 +1,7 @@
 /auth/src/.vs/**
 /auth/src/bin/**
 /auth/src/obj/**
+/list/src/.vs/**
+/list/src/bin/**
+/list/src/obj/**
+
