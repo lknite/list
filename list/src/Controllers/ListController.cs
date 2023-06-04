@@ -24,29 +24,17 @@ namespace list.Controllers
             Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
             Console.WriteLine("Email: " + User.FindFirstValue("email"));
 
-            /*
-            //
-            String api = template;
-            //
-            String group = "list.aarr.xyz";
-            String version = "v1";
-            String plural = api + "s";
 
-            Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
-            Console.WriteLine("Email: " + User.FindFirstValue("email"));
-            Console.WriteLine("Name: " + User.FindFirstValue("name"));
-
-            Console.WriteLine("The current namespace is: "+ Globals.service.kubeconfig.Namespace);
-            */
-
-
-            //return Ok(g.Spec.items);
             return Ok();
         }
 
         [HttpPost("list")]
         public async Task<IActionResult> Post()
         {
+            Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
+            Console.WriteLine("Email: " + User.FindFirstValue("email"));
+
+
             return Ok();
         }
     }
