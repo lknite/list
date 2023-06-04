@@ -43,5 +43,11 @@ namespace list.Controllers
             //return Ok(g.Spec.items);
             return Ok();
         }
+
+        [HttpPost("list")]
+        public async Task<IActionResult> Post()
+        {
+            return Ok();
+        }
     }
 }
