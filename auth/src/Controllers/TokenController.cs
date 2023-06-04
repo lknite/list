@@ -14,10 +14,9 @@ namespace lido.Controllers
         /// <summary>
         /// Create a new instance of an api_key (Usually this would be a POST, but as a GET is easier for new folks.)
         /// </summary>
-        /// <param name="name"></param>
         /// <returns></returns>
         [HttpGet()]
-        public IActionResult Get(string name)
+        public IActionResult Get()
         {
             Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
             Console.WriteLine("Email: " + User.FindFirstValue("email"));
@@ -27,7 +26,6 @@ namespace lido.Controllers
                 User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
             claims.Add("email",
                 User.FindFirstValue("email"));
-            claims.Add("name", name);
 
             Console.WriteLine("Claims:\n" + JsonSerializer.Serialize(claims, new JsonSerializerOptions { WriteIndented = true }));
 
@@ -47,10 +45,9 @@ namespace lido.Controllers
         /// <summary>
         /// Create a new instance of an api_key (Also implemented as a GET for new folks.)
         /// </summary>
-        /// <param name="name"></param>
         /// <returns></returns>
         [HttpPost()]
-        public IActionResult Post(string name)
+        public IActionResult Post()
         {
             Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
             Console.WriteLine("Email: " + User.FindFirstValue("email"));
