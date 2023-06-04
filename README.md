@@ -17,6 +17,9 @@ list works by managing the allocation of blocks of work to be processed, as well
 as tracking completed work.  list is not the first to implement distributed
 processing, but it is an ideal implementation for simple use cases.
 
+## Idempotent ##
+Given that blocks of work may be partially processed and then restarted, work should
+be performed in an idempotent way.
 
 ## Features ##
 - an auth microservice to gather user claims via oidc and generate an api_key
