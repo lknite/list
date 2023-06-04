@@ -32,10 +32,10 @@ namespace list.Controllers
 
         [HttpPost()]
         public async Task<IActionResult> Post(
-                string task,
-                string action,
                 string total,
                 string size,
+                string task = "",
+                string action = "",
                 int priority = 3,
                 int timeout = 30,
                 List<Attr> attrs = null
