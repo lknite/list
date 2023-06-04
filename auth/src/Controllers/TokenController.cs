@@ -7,7 +7,7 @@ namespace list.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("/auth/token")]
+    [Route("/token")]
     [Produces("application/json")]
     public class TokenController : ControllerBase
     {
