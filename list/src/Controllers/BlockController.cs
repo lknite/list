@@ -19,7 +19,7 @@ namespace list.Controllers
     public class BlockController : ControllerBase
     {
         /// <summary>
-        /// get block of objects owned by user
+        /// get list of objects owned by user
         /// </summary>
         /// <returns></returns>
         [HttpGet()]
