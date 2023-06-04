@@ -13,18 +13,6 @@ namespace list
         public KubernetesClientConfiguration kubeconfig;
         public Kubernetes kubeclient;
 
-        /*
-        //
-        static String api = "tic-tac-toe";
-        //
-        static String group = "list.aarr.xyz";
-        static String version = "v1";
-        static String plural = api + "s";
-
-        //
-        public GenericClient generic;
-        */
-
         public Service()
         {
             cm = new ClientManager();
@@ -44,32 +32,15 @@ namespace list
             // Use the config object to create a client.
             kubeclient = new Kubernetes(kubeconfig);
 
-            //
-            //generic = new GenericClient(kubeclient, group, version, plural);
+            // Check for required environment variable(s)
+            if (Environment.GetEnvironmentVariable("OIDC_USER_CLAIM") == null)
+            {
+                throw new Exception("Missing required environment variable: 'OIDC_USER_CLAIM'");
+            }
         }
         public async void Start()
         {
             main.Start();
         }
-
-        /*
-        // TODO: Put this in its own class somewhere
-        public static void OnClientMessageReceived(object sender, MessageReceivedEventArgs args)
-        {
-            // Parse and raise event with data
-            JsonElement o = JsonSerializer.Deserialize<JsonElement>(args.message);
-
-            Console.WriteLine("Message from client: "
-                + JsonSerializer.Serialize(o, new JsonSerializerOptions { WriteIndented = true }));
-        }
-
-        // Full lifetime management of websocket, returns upon dropped/closed websocket
-        // Called from within Startup -> Configure -> app.Use
-        public async Task<bool> HandleWebRequest(HttpContext context, Func<Task> next)
-        {
-            await cm.HandleWebRequest(context, next);
-            return true;
-        }
-        */
     }
 }
