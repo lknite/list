@@ -35,8 +35,8 @@ namespace list.K8sHelpers
             // parse claims
             JsonElement o = JsonSerializer.Deserialize<JsonElement>(claims);
 
-            // new game instance
-            var e = new list.crd.token.CrdToken()
+            // new token instance
+            var t = new list.crd.token.CrdToken()
             {
                 Kind = "Token",
                 ApiVersion = group +"/" + version,
@@ -58,13 +58,13 @@ namespace list.K8sHelpers
                 }
             };
             // debug
-            Console.WriteLine(JsonSerializer.Serialize(e, new JsonSerializerOptions { WriteIndented = true }));
+            Console.WriteLine(JsonSerializer.Serialize(t, new JsonSerializerOptions { WriteIndented = true }));
 
             try
             {
-                Console.WriteLine("creating CR {0}", e.Metadata.Name);
+                Console.WriteLine("creating CR {0}", t.Metadata.Name);
                 var response = await Globals.service.kubeclient.CustomObjects.CreateNamespacedCustomObjectWithHttpMessagesAsync(
-                    e,
+                    t,
                     group, version,
                     Globals.service.kubeconfig.Namespace,
                     plural).ConfigureAwait(false);
@@ -88,7 +88,7 @@ namespace list.K8sHelpers
             //Dictionary<string, string> result = new Dictionary<string, string>();
             //result.Add("game", g.Metadata.Name);
 
-            return e.Metadata.Name.ToString();
+            return t.Metadata.Name.ToString();
         }
     }
 }

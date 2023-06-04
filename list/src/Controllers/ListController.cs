@@ -19,8 +19,12 @@ namespace list.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("list")]
-        public async Task<IActionResult> Get(string template, string game)
+        public async Task<IActionResult> Get()
         {
+            Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
+            Console.WriteLine("Email: " + User.FindFirstValue("email"));
+
+            /*
             //
             String api = template;
             //
@@ -33,18 +37,6 @@ namespace list.Controllers
             Console.WriteLine("Name: " + User.FindFirstValue("name"));
 
             Console.WriteLine("The current namespace is: "+ Globals.service.kubeconfig.Namespace);
-            /*
-            //
-            GenericClient generic = new GenericClient(Globals.service.kubeclient, group, version, plural);
-
-            // Acquire game by id
-            CrdGame g = await generic.ReadNamespacedAsync<CrdGame>(Globals.service.kubeconfig.Namespace, game);
-
-            // If there are no items, instantiate something valid
-            if (g.Spec.items == null)
-            {
-                g.Spec.items = new List<Item>();
-            }
             */
 
 
