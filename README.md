@@ -4,7 +4,7 @@
 Distributed list processing
 
 ## What is it ##
-(implementation in progress)
+(_implementation in progress_)
 
 When working through a list of 1000 items, if power is lost, you need to be able
 to pick back up where you left off.  In order to do this you need to keep track
