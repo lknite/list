@@ -1,9 +1,9 @@
 ﻿
 
-using lido.crd.token;
-using lido.K8sHelpers;
+using list.crd.token;
+using list.K8sHelpers;
 
-namespace lido.Helpers
+namespace list.Helpers
 {
     public class ApiKeyManager
     {

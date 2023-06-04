@@ -1,7 +1,7 @@
 ﻿using k8s.Models;
 using System.Text.Json.Serialization;
 
-namespace lido.crd.token
+namespace list.crd.token
 {
     public class CrdToken : CustomResourceDefinitions.CustomResource<CrdTokenSpec, CrdTokenStatus>
     {

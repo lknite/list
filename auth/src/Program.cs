@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 
-namespace lido
+namespace list
 {
     public static class Globals
     {

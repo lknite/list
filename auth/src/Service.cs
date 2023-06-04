@@ -1,7 +1,7 @@
-﻿using lido.Helpers;
+﻿using list.Helpers;
 using k8s;
 
-namespace lido
+namespace list
 {
     public class Service
     {

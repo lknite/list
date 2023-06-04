@@ -1,4 +1,4 @@
-﻿using lido.CustomResourceDefinitions;
+﻿using list.CustomResourceDefinitions;
 using k8s.Autorest;
 using k8s.KubeConfigModels;
 using k8s.Models;
@@ -11,15 +11,15 @@ using System.IO;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
-using lido;
+using list;
 
 
-namespace lido.K8sHelpers
+namespace list.K8sHelpers
 {
     public class zK8sToken
     {
         static String api = "token";
-        static String group = "tradermanager.lido.aarr.xyz";
+        static String group = "list.aarr.xyz";
         static String version = "v1";
         static String plural = api + "s";
 
@@ -34,7 +34,7 @@ namespace lido.K8sHelpers
             JsonElement o = JsonSerializer.Deserialize<JsonElement>(claims);
 
             // new game instance
-            var e = new lido.crd.token.CrdToken()
+            var e = new list.crd.token.CrdToken()
             {
                 Kind = "Token",
                 ApiVersion = group +"/" + version,
@@ -45,9 +45,9 @@ namespace lido.K8sHelpers
                     NamespaceProperty = Globals.service.kubeconfig.Namespace,
                 },
                 // spec
-                Spec = new lido.crd.token.CrdTokenSpec
+                Spec = new list.crd.token.CrdTokenSpec
                 {
-                    token = new lido.crd.token.Token()
+                    token = new list.crd.token.Token()
                     {
                         email = o.GetProperty("email").ToString(),
                         name = o.GetProperty("name").ToString(),

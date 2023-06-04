@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Text.Json;
 
-namespace lido.Controllers
+namespace list.Controllers
 {
     [ApiController]
     [Route("api/token")]
