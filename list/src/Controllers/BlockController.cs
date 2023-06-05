@@ -85,7 +85,7 @@ namespace list.Controllers
                     // update the checkout timestamp
 
                     // format object to return as json
-                    result.Add("block", "todo: id");
+                    result.Add("block", "123");
 
                     // release semaphore lock
                     Globals.semaphore.Release();
