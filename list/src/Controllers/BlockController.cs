@@ -88,7 +88,7 @@ namespace list.Controllers
                     result.Add("block", "todo: id");
 
                     // release semaphore lock
-                    Globals.semaphore.Wait();
+                    Globals.semaphore.Release();
 
                     return Ok(result);
                 }
@@ -109,7 +109,7 @@ namespace list.Controllers
             result.Add("block", id);
 
             // release semaphore lock
-            Globals.semaphore.Wait();
+            Globals.semaphore.Release();
 
             return Ok(result);
         }
