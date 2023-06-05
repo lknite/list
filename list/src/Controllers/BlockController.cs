@@ -136,7 +136,7 @@ namespace list.Controllers
                 );
 
             // update index block
-            i.Spec.block.index = (Int32.Parse(i.Spec.block.index) + Int32.Parse(l.Spec.list.size)).ToString();
+            i.Spec.block.index = (Int32.Parse(index) + Int32.Parse(size)).ToString();
             await zK8sBlock.generic.PatchNamespacedAsync<CrdBlock>(
                     new V1Patch(i.Spec, V1Patch.PatchType.MergePatch),
                     Globals.service.kubeconfig.Namespace, i.Metadata.Name);
