@@ -96,8 +96,8 @@ namespace list.Controllers
 
 
             // create a block
-            string index = "todo: index";
-            string size = "todo: size";
+            string index = "10001";
+            string size = "101";
             string id = await zK8sBlock.Post(
                 list,
                 User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")),
