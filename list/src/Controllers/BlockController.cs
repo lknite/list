@@ -94,16 +94,25 @@ namespace list.Controllers
                 }
             }
 
+            // get index block
+            CrdBlock i = await zK8sBlock.generic.ReadNamespacedAsync<CrdBlock>(
+                    Globals.service.kubeconfig.Namespace, list);
 
             // create a block
-            string index = "10001";
-            string size = "101";
+            string index = i.Spec.block.index;
+            string size = l.Spec.list.size;
             string id = await zK8sBlock.Post(
                 list,
                 User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")),
                 index,
                 size
                 );
+
+            // update index block
+            i.Spec.block.index = (Int32.Parse(i.Spec.block.index) + Int32.Parse(l.Spec.list.size)).ToString();
+            await zK8sBlock.generic.PatchNamespacedAsync<CrdBlock>(
+                    new V1Patch(i.Spec, V1Patch.PatchType.MergePatch),
+                    Globals.service.kubeconfig.Namespace, i.Metadata.Name);
 
             // format object to return as json
             result.Add("block", id);
