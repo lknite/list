@@ -142,7 +142,7 @@ namespace list.Controllers
             // update index block
             i.Spec.block.index = (Int32.Parse(index) + Int32.Parse(size)).ToString();
             await zK8sBlock.generic.PatchNamespacedAsync<CrdBlock>(
-                    new V1Patch(i.Spec, V1Patch.PatchType.MergePatch),
+                    new V1Patch(i, V1Patch.PatchType.MergePatch),
                     Globals.service.kubeconfig.Namespace, i.Metadata.Name);
 
             // format object to return as json
