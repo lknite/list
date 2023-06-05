@@ -78,7 +78,7 @@ namespace list.Controllers
 
             // create an index block with list as the name
             await zK8sBlock.Post(
-                list,
+                "index",
                 User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")),
                 "0",
                 total
