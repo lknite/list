@@ -93,8 +93,6 @@ namespace list.Controllers
                         continue;
                     }
 
-                    // update the checkout timestamp
-
                     // format object to return as json
                     result.Add("block", b.Metadata.Name);
 
@@ -109,9 +107,27 @@ namespace list.Controllers
             CrdBlock i = await zK8sBlock.generic.ReadNamespacedAsync<CrdBlock>(
                     Globals.service.kubeconfig.Namespace, list);
 
-            // create a block
+            // is there another block to allocate?
+            if (Int32.Parse(i.Spec.block.index) == Int32.Parse(i.Spec.block.size)) {
+                // no more blocks to hand out
+
+                // release semaphore lock
+                Globals.semaphore.Release();
+
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
+
+            // index & size of new block
             string index = i.Spec.block.index;
             string size = l.Spec.list.size;
+
+            // last block is sometimes not full size, if this is the case for this block, adjust
+            if ((Int32.Parse(index) + Int32.Parse(size)) > Int32.Parse(i.Spec.block.size))
+            {
+                size = (Int32.Parse(i.Spec.block.size) - Int32.Parse(index)).ToString();
+            }
+
+            // create block
             string id = await zK8sBlock.Post(
                 list,
                 User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")),
