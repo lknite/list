@@ -86,6 +86,7 @@ namespace list.Controllers
                         long.Parse(b.Spec.block.when)
                         ).UtcDateTime;
                     Console.WriteLine("timestamp: " + when);
+                    Console.WriteLine("dt.utcnow: " + DateTime.UtcNow);
 
                     // if block has not timedout, then skip
                     if (when.AddSeconds(l.Spec.list.timeout) < DateTime.UtcNow)
