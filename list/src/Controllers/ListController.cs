@@ -62,7 +62,7 @@ namespace list.Controllers
             Console.WriteLine("Email: " + User.FindFirstValue("email"));
 
             // create a list
-            string id = await zK8sList.Post(
+            string list = await zK8sList.Post(
                 User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")),
                 task,
                 action,
@@ -76,9 +76,17 @@ namespace list.Controllers
                 attrs
                 );
 
+            // create an index block with list as the name
+            await zK8sBlock.Post(
+                list,
+                User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")),
+                "0",
+                total
+                );
+
             // format object to return as json
             Dictionary<string, string> result = new Dictionary<string, string>();
-            result.Add("list", id);
+            result.Add("list", list);
 
             return Ok(result);
         }
