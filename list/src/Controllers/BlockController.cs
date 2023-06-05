@@ -87,6 +87,12 @@ namespace list.Controllers
                         ).UtcDateTime;
                     Console.WriteLine("timestamp: " + when);
 
+                    // if block has not timedout, then skip
+                    if (when.AddSeconds(l.Spec.list.timeout) < DateTime.UtcNow)
+                    {
+                        continue;
+                    }
+
                     // update the checkout timestamp
 
                     // format object to return as json
