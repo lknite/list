@@ -23,6 +23,7 @@ namespace list.K8sHelpers
         public static GenericClient generic = new GenericClient(Globals.service.kubeclient, group, version, plural);
 
         public static async Task<string> Post(
+                string name,
                 string list,
                 string owner,
                 string index,
@@ -39,7 +40,7 @@ namespace list.K8sHelpers
                 ApiVersion = group +"/" + version,
                 Metadata = new V1ObjectMeta
                 {
-                    Name = list,
+                    Name = name,
                     NamespaceProperty = Globals.service.kubeconfig.Namespace,
                 },
                 // spec

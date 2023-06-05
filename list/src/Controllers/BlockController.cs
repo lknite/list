@@ -130,6 +130,7 @@ namespace list.Controllers
             // create block
             string block = await zK8sBlock.Post(
                 (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString(),
+                list,
                 User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")),
                 index,
                 size
