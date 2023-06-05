@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace list.Controllers
 {
@@ -81,6 +82,10 @@ namespace list.Controllers
                 if (b.Spec.block.list.Equals(list))
                 {
                     // has the block timed out?
+                    DateTime when = DateTimeOffset.FromUnixTimeMilliseconds(
+                        long.Parse(b.Spec.block.when)
+                        ).UtcDateTime;
+                    Console.WriteLine("timestamp: " + when);
 
                     // update the checkout timestamp
 
