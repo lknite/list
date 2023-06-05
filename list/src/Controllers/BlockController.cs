@@ -128,7 +128,7 @@ namespace list.Controllers
             }
 
             // create block
-            string id = await zK8sBlock.Post(
+            string block = await zK8sBlock.Post(
                 list,
                 User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")),
                 index,
@@ -142,7 +142,7 @@ namespace list.Controllers
                     Globals.service.kubeconfig.Namespace, i.Metadata.Name);
 
             // format object to return as json
-            result.Add("block", id);
+            result.Add("block", block);
 
             // release semaphore lock
             Globals.semaphore.Release();
