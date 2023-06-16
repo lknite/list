@@ -4,7 +4,7 @@ using list.Managers.Client;
 
 namespace list
 {
-    public class Service
+    public class Service : IHostedService
     {
         public ClientManager cm;
         public Main.Main main;
@@ -43,9 +43,20 @@ namespace list
                 }
             }
         }
-        public async void Start()
+
+        public Task StartAsync(CancellationToken cancellationToken)
         {
             main.Start();
+
+            return Task.CompletedTask;
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            Console.WriteLine("***");
+            Console.WriteLine("* TODO: Clean shutdown");
+
+            return Task.CompletedTask;
         }
     }
 }

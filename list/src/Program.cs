@@ -15,17 +15,27 @@ namespace list
         public static SemaphoreSlim semaphore = new SemaphoreSlim(1);
         public static CancellationToken cancellationToken = new CancellationToken();
 
-        public static Service service = new Service();
+        public static Service service;
+        public static ILogger log;
     }
 
     public class Program
     {
         public static void Main(string[] args)
         {
-            // adding this here will cause the compiler to ensure globals is fully instantiated before proceeding
-            Globals.service.Start();
-
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddHostedService<Service>();
+
+            // get instance of logger for writing to console
+            Globals.log = LoggerFactory.Create(config =>
+            {
+                config.AddSimpleConsole(options =>
+                {
+                    options.IncludeScopes = true;
+                    options.SingleLine = true;
+                    options.TimestampFormat = "yyyy:MM:dd H:mm:ss ";
+                });
+            }).CreateLogger("");
 
 
             // Add services to the container.
