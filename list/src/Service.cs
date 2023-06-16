@@ -46,6 +46,10 @@ namespace list
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
+            // save global reference for easy access
+            Globals.service = this;
+
+            //
             main.Start();
 
             return Task.CompletedTask;
