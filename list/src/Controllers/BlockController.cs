@@ -115,7 +115,24 @@ namespace list.Controllers
             Console.WriteLine("Email: " + User.FindFirstValue("email"));
 
             // only list owner is allowed to create a new block
-            CrdList l = await zK8sList.generic.ReadNamespacedAsync<CrdList>(Globals.service.kubeconfig.Namespace, list);
+            CrdList l = null;
+            try
+            {
+                l = await zK8sList.generic.ReadNamespacedAsync<CrdList>(Globals.service.kubeconfig.Namespace, list);
+            }
+            catch (k8s.Autorest.HttpOperationException ex)
+            {
+                Console.WriteLine(ex);
+
+                if (ex.Response.StatusCode.Equals(StatusCodes.Status404NotFound)) {
+
+                    // release semaphore lock
+                    Globals.semaphore.Release();
+
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+            }
+
             if (!l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))))
             {
                 // release semaphore lock
