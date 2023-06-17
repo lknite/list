@@ -45,6 +45,32 @@ namespace list.Controllers
             return Ok(result);
         }
 
+        [HttpPut()]
+        public async Task<IActionResult> Put(
+                string block
+            )
+        {
+            Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
+            Console.WriteLine("Email: " + User.FindFirstValue("email"));
+
+            /*
+            CustomResourceList<CrdBlock> blocks = await zK8sBlock.generic.ListNamespacedAsync<CustomResourceList<CrdBlock>>(Globals.service.kubeconfig.Namespace);
+
+            List<Block> result = new List<Block>();
+            foreach (CrdBlock b in blocks.Items)
+            {
+                // only return blocks owned by user
+                if (b.Spec.block.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))))
+                {
+                    result.Add(b.Spec.block);
+                }
+            }
+            */
+
+
+            return Ok();
+        }
+
 
         /// <summary>
         /// request a new block to work on
