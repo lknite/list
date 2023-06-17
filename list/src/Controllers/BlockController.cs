@@ -132,11 +132,10 @@ namespace list.Controllers
                     // if the block has not timed out, then skip to next block
                     if ((when).AddSeconds(l.Spec.list.timeout) < DateTime.UtcNow)
                     {
+                        Console.WriteLine("   pending: " + (when).AddSeconds(l.Spec.list.timeout));
                         continue;
                     }
-
-                    // release semaphore lock
-                    Globals.semaphore.Release();
+                    Console.WriteLine("  timedout: " + DateTime.UtcNow);
 
                     // patch block with updated timestamp
                     b.Spec.block.when = Timestamp.getUtcTimestampInMilliseconds().ToString();
@@ -153,6 +152,9 @@ namespace list.Controllers
                             new V1Patch(b.Spec, V1Patch.PatchType.MergePatch),
                             Globals.service.kubeconfig.Namespace,
                             b.Metadata.Name);
+
+                    // release semaphore lock
+                    Globals.semaphore.Release();
 
                     return Ok(b.Spec.block);
                 }
