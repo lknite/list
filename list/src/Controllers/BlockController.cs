@@ -130,6 +130,7 @@ namespace list.Controllers
                     Console.WriteLine("timeout at: " + (when).AddSeconds(l.Spec.list.timeout));
 
                     // if the block has not timed out, then skip to next block
+                    Console.WriteLine((when).AddSeconds(l.Spec.list.timeout) + " vs " + DateTime.UtcNow);
                     if ((when).AddSeconds(l.Spec.list.timeout) < DateTime.UtcNow)
                     {
                         Console.WriteLine("   pending: " + (when).AddSeconds(l.Spec.list.timeout));
