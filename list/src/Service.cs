@@ -1,6 +1,7 @@
 ﻿using k8s;
 using System.Text.Json;
 using list.Managers.Client;
+using gge.K8sControllers;
 
 namespace list
 {
@@ -12,6 +13,9 @@ namespace list
         //
         public KubernetesClientConfiguration kubeconfig;
         public Kubernetes kubeclient;
+
+        //
+        public ListK8sController listController;
 
         public Service()
         {
@@ -51,6 +55,9 @@ namespace list
 
             //
             main.Start();
+
+            // Start up all the k8s controllers
+            listController.Listen();
 
             return Task.CompletedTask;
         }
