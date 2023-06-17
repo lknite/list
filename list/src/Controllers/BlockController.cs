@@ -126,8 +126,8 @@ namespace list.Controllers
                     DateTime when = Timestamp.getUtcDateTimeFromTimestampInMilliseconds(
                         long.Parse(b.Spec.block.when)
                         );
-                    Console.WriteLine("timestamp: " + when);
-                    Console.WriteLine("dt.utcnow: " + (DateTime.UtcNow).AddSeconds(l.Spec.list.timeout));
+                    Console.WriteLine(" timestamp: " + when);
+                    Console.WriteLine("timeout at: " + (DateTime.UtcNow).AddSeconds(l.Spec.list.timeout));
 
                     // if the block has not timed out, then skip to next block
                     if (when < (DateTime.UtcNow).AddSeconds(l.Spec.list.timeout))
