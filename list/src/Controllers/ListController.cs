@@ -87,7 +87,7 @@ namespace list.Controllers
             list.size = size;
             list.task = task;
             list.action = action;
-            list.state = "pending";
+            list.state = "active";
             list.priority = priority;
             list.complete = "0";
             list.percent = "0";
