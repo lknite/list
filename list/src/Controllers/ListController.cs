@@ -55,6 +55,8 @@ namespace list.Controllers
                 string action = "",
                 int priority = 3,
                 int timeout = 30,
+                bool isPublic = true,
+                bool allowAnonymous = false,
                 List<Attr> attrs = null
             )
         {
@@ -73,6 +75,8 @@ namespace list.Controllers
                 "0",
                 "0",
                 timeout,
+                isPublic,
+                allowAnonymous,
                 attrs
                 );
 

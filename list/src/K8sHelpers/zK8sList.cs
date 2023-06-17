@@ -36,6 +36,8 @@ namespace list.K8sHelpers
                 string complete,
                 string percent,
                 int timeout,
+                bool isPublic,
+                bool allowAnonymous,
                 List<Attr> attrs
             )
         {
@@ -46,7 +48,7 @@ namespace list.K8sHelpers
             var l = new list.crd.list.CrdList()
             {
                 Kind = "List",
-                ApiVersion = group +"/" + version,
+                ApiVersion = group + "/" + version,
                 Metadata = new V1ObjectMeta
                 {
                     Name = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString(),
@@ -67,6 +69,8 @@ namespace list.K8sHelpers
                         complete = complete,
                         percent = percent,
                         timeout = timeout,
+                        isPublic = isPublic,
+                        allowAnonymous = allowAnonymous,
                         ts_add = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString(),
                         ts_start = "",
                         ts_suspend = "",
