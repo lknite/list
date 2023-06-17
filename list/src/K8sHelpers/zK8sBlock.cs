@@ -43,7 +43,7 @@ namespace list.K8sHelpers
             var b = new list.crd.block.CrdBlock()
             {
                 Kind = "Block",
-                ApiVersion = group +"/" + version,
+                ApiVersion = group + "/" + version,
                 Metadata = new V1ObjectMeta
                 {
                     Name = name,
@@ -55,6 +55,7 @@ namespace list.K8sHelpers
                     block = new list.crd.block.Block()
                     {
                         list = block.list,
+                        block = name,
                         owner = block.owner,
                         index = block.index,
                         size = block.size,

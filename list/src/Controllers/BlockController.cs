@@ -195,6 +195,7 @@ namespace list.Controllers
             // create block
             block.when = Timestamp.getUtcTimestampInMilliseconds().ToString();
             block.list = list;
+            block.block = list + "-" + block.when;
             block.owner = User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"));
             block.index = index;
             block.size = size;
