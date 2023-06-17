@@ -31,13 +31,13 @@ namespace list.Controllers
 
             CustomResourceList<CrdBlock> blocks = await zK8sBlock.generic.ListNamespacedAsync<CustomResourceList<CrdBlock>>(Globals.service.kubeconfig.Namespace);
 
-            List<string> result = new List<string>();
+            List<Block> result = new List<Block>();
             foreach (CrdBlock b in blocks.Items)
             {
                 // only return blocks owned by user
                 if (b.Spec.block.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))))
                 {
-                    result.Add(b.Metadata.Name);
+                    result.Add(b.Spec.block);
                 }
             }
 
