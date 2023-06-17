@@ -32,11 +32,14 @@ namespace list.K8sHelpers
             string when = Timestamp.getUtcTimestampInMilliseconds().ToString();
             // default name is timestamp
             string name = block.list +"-"+ when;
+            // default state is ""
+            string state = "";
 
             // an index block has the same name as the list name
             if (isIndex)
             {
                 name = block.list;
+                state = "index";
             }
 
             // new block instance
@@ -59,7 +62,7 @@ namespace list.K8sHelpers
                         owner = block.owner,
                         index = block.index,
                         size = block.size,
-                        state = "",
+                        state = state,
                         when = when
                     }
                 }

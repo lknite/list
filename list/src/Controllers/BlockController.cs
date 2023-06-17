@@ -131,7 +131,9 @@ namespace list.Controllers
             foreach (CrdBlock b in blocks.Items)
             {
                 // check that blocks are associated with this list
-                if (b.Spec.block.list.Equals(list) && !b.Spec.block.state.Equals("complete"))
+                if (b.Spec.block.list.Equals(list)
+                    && !b.Spec.block.state.Equals("complete")
+                    && !b.Spec.block.state.Equals("index"))
                 {
                     // has the block timed out?
                     DateTime when = Timestamp.getUtcDateTimeFromTimestampInMilliseconds(
@@ -195,7 +197,6 @@ namespace list.Controllers
             // create block
             block.when = Timestamp.getUtcTimestampInMilliseconds().ToString();
             block.list = list;
-            block.block = list + "-" + block.when;
             block.owner = User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"));
             block.index = index;
             block.size = size;
