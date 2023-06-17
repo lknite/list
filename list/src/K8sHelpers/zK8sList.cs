@@ -39,7 +39,7 @@ namespace list.K8sHelpers
                 ApiVersion = group + "/" + version,
                 Metadata = new V1ObjectMeta
                 {
-                    Name = (DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond).ToString(),
+                    Name = when,
                     NamespaceProperty = Globals.service.kubeconfig.Namespace,
                 },
                 // spec
