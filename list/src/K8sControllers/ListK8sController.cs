@@ -94,7 +94,7 @@ namespace gge.K8sControllers
 
 
             Console.WriteLine("Addition/Modify detected: " + l.Metadata.Name);
-            Console.WriteLine("g.Spec.state: " + l.Spec.list.state);
+            Console.WriteLine("l.Spec.list.state: " + l.Spec.list.state);
 
 
             // loop through all blocks associated with deleted list & delete
@@ -103,9 +103,11 @@ namespace gge.K8sControllers
             foreach (CrdBlock block in blocks.Items)
             {
                 // is this block associated with the list?
+                Console.WriteLine(block.Spec.block.list + " vs " + l.Metadata.Name);
                 if (block.Spec.block.list.Equals(l.Metadata.Name))
                 {
                     // if yes, then delete block 
+                    Console.WriteLine("delete block: " + block.Metadata.Name);
                     zK8sBlock.generic.DeleteNamespacedAsync<CrdBlock>(
                             Globals.service.kubeconfig.Namespace,
                             block.Metadata.Name);
