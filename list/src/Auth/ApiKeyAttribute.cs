@@ -9,7 +9,7 @@ using list.Helpers;
 using System.Security.Claims;
 using System.Text.Json;
 
-namespace list.Attributes
+namespace list.Auth
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class ApiKeyAttribute : Attribute, IAsyncActionFilter

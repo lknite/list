@@ -11,7 +11,7 @@ namespace list.Controllers
     public class ApiTokenController : ControllerBase
     {
         /// <summary>
-        /// Get email associated with an api_key
+        /// Get email associated with an api_key (internal only)
         /// </summary>
         /// <param name="guid"></param>
         /// <returns></returns>
