@@ -150,7 +150,7 @@ namespace list.Controllers
                                     + "} }";
                     */
                     await zK8sBlock.generic.PatchNamespacedAsync<CrdBlock>(
-                            new V1Patch(b.Spec, V1Patch.PatchType.MergePatch),
+                            new V1Patch(b, V1Patch.PatchType.MergePatch),
                             Globals.service.kubeconfig.Namespace,
                             b.Metadata.Name);
 
