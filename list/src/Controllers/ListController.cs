@@ -112,6 +112,9 @@ namespace list.Controllers
             result.Add("new", id);
             Globals.service.cm.SendToAll(JsonSerializer.Serialize(result));
 
+            // remove 'new' notice sent to websocket, and return instead 'id' for rest call
+            result.Remove("new");
+            result.Add("id", id);
             return Ok(result);
         }
 
