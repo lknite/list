@@ -131,7 +131,7 @@ namespace list.Controllers
             foreach (CrdBlock b in blocks.Items)
             {
                 // check that blocks are associated with this list
-                if (b.Spec.block.list.Equals(list) && b.Spec.block.state.Equals("active"))
+                if (b.Spec.block.list.Equals(list) && !b.Spec.block.state.Equals("complete"))
                 {
                     // has the block timed out?
                     DateTime when = Timestamp.getUtcDateTimeFromTimestampInMilliseconds(
