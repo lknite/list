@@ -64,7 +64,9 @@ namespace list.Controllers
             {
                 /*
                 Console.WriteLine("** one **");
+                */
                 Console.WriteLine("StatusCode: " + ex.Response.StatusCode);
+                /*
                 Console.WriteLine("   Message: " + ex.Message);
                 Console.WriteLine("      Data: " + ex.InnerException.Data);
                 */
