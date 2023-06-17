@@ -52,9 +52,28 @@ namespace list.Controllers
                 return Ok(result);
             }
 
-            // otherwise, if listId is provided, return all properties of list
-            CrdList l = await zK8sList.generic.ReadNamespacedAsync<CrdList>(
-                    Globals.service.kubeconfig.Namespace, list);
+            CrdList l = null;
+            try
+            {
+                // otherwise, if listId is provided, return all properties of list
+                l = await zK8sList.generic.ReadNamespacedAsync<CrdList>(
+                        Globals.service.kubeconfig.Namespace, list);
+            }
+            catch (k8s.Autorest.HttpOperationException ex)
+            {
+                /*
+                Console.WriteLine("** one **");
+                Console.WriteLine("StatusCode: " + ex.Response.StatusCode);
+                Console.WriteLine("   Message: " + ex.Message);
+                Console.WriteLine("      Data: " + ex.InnerException.Data);
+                */
+
+                if (ex.Response.StatusCode.Equals("Not Found"))
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+            }
+
 
             return Ok(l.Spec.list);
         }
