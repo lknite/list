@@ -138,6 +138,22 @@ namespace list.Controllers
                     // release semaphore lock
                     Globals.semaphore.Release();
 
+                    // patch block with updated timestamp
+                    b.Spec.block.when = Timestamp.getUtcTimestampInMilliseconds().ToString();
+                    /*
+                    string patchStr = "{ \"spec\": {"
+                                    + "\"players\": "
+                                    + JsonSerializer.Serialize(g.Spec.players, new JsonSerializerOptions { WriteIndented = true })
+                                    + ","
+                                    + "\"watchers\": "
+                                    + JsonSerializer.Serialize(g.Spec.watchers, new JsonSerializerOptions { WriteIndented = true })
+                                    + "} }";
+                    */
+                    await zK8sBlock.generic.PatchNamespacedAsync<CrdBlock>(
+                            new V1Patch(b.Spec, V1Patch.PatchType.MergePatch),
+                            Globals.service.kubeconfig.Namespace,
+                            b.Metadata.Name);
+
                     return Ok(b.Spec.block);
                 }
             }
