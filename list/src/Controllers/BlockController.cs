@@ -45,8 +45,8 @@ namespace list.Controllers
             return Ok(result);
         }
 
-        [HttpPut()]
-        public async Task<IActionResult> Put(
+        [HttpPatch()]
+        public async Task<IActionResult> Patch(
                 string block
             )
         {
