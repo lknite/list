@@ -142,7 +142,7 @@ namespace gge.K8sControllers
             }
 
             // update total
-            l.Spec.list.total = total.ToString();
+            l.Spec.list.complete = total.ToString();
 
             // check if total is expected total
             if (total == long.Parse(l.Spec.list.total))
