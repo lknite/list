@@ -122,18 +122,28 @@ namespace list.Controllers
             }
             catch (k8s.Autorest.HttpOperationException ex)
             {
-                Console.WriteLine(" Exception: "+ ex);
-                Console.WriteLine("StatusCode: "+ ex.Response.StatusCode);
-                Console.WriteLine("   Message: "+ ex.Message);
-                Console.WriteLine("      Data: "+ ex.InnerException.Data);
+                Console.WriteLine("** one **");
+                Console.WriteLine(" Exception: " + ex);
+                Console.WriteLine("StatusCode: " + ex.Response.StatusCode);
+                Console.WriteLine("   Message: " + ex.Message);
+                Console.WriteLine("      Data: " + ex.InnerException.Data);
 
-                if (ex.Response.StatusCode.Equals(StatusCodes.Status404NotFound)) {
+                if (ex.Response.StatusCode.Equals(StatusCodes.Status404NotFound))
+                {
 
                     // release semaphore lock
                     Globals.semaphore.Release();
 
                     return StatusCode(StatusCodes.Status404NotFound);
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("** two **");
+                Console.WriteLine(" Exception: " + ex);
+                Console.WriteLine("StatusCode: " + ex.Response.StatusCode);
+                Console.WriteLine("   Message: " + ex.Message);
+                Console.WriteLine("      Data: " + ex.InnerException.Data);
             }
 
             if (!l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))))

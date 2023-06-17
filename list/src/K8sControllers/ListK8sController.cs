@@ -92,7 +92,6 @@ namespace gge.K8sControllers
             Dictionary<string, string> data;
             string patchStr = string.Empty;
 
-
             Console.WriteLine("Addition/Modify detected: " + l.Metadata.Name);
             Console.WriteLine("l.Spec.list.state: " + l.Spec.list.state);
 
