@@ -133,7 +133,7 @@ namespace list.Controllers
                 */
 
 
-                if (ex.Response.StatusCode.Equals(HttpStatusCode.NotFound))
+                if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                 {
                     // release semaphore lock
                     Globals.semaphore.Release();

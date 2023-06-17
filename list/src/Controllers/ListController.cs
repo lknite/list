@@ -69,7 +69,7 @@ namespace list.Controllers
                 Console.WriteLine("      Data: " + ex.InnerException.Data);
                 */
 
-                if (ex.Response.StatusCode.Equals(HttpStatusCode.NotFound))
+                if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                 {
                     return StatusCode(StatusCodes.Status404NotFound);
                 }
