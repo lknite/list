@@ -60,7 +60,7 @@ namespace list
             main.Start();
 
             // Start up all the k8s controllers
-            //listController.Listen();
+            listController.Listen();
 
             return Task.CompletedTask;
         }
