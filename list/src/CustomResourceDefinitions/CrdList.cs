@@ -52,6 +52,10 @@ namespace list.crd.list
         public string percent { get; set; }
         [JsonPropertyName("timeout")]
         public int timeout { get; set; }
+        [JsonPropertyName("isPublic")]
+        public bool isPublic { get; set; }
+        [JsonPropertyName("allowAnonymous")]
+        public bool allowAnonymous { get; set; }
         [JsonPropertyName("ts_add")]
         public string ts_add { get; set; }
         [JsonPropertyName("ts_start")]

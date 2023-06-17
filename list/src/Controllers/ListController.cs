@@ -89,6 +89,8 @@ namespace list.Controllers
             Dictionary<string, string> result = new Dictionary<string, string>();
             result.Add("list", list);
 
+            // send to websocket of all who are able to process this list (if anonymous then to all)
+
             return Ok(result);
         }
 
