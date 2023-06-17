@@ -141,17 +141,14 @@ namespace gge.K8sControllers
                 }
             }
 
+            // update total
+            l.Spec.list.total = total.ToString();
+
             // check if total is expected total
             if (total == long.Parse(l.Spec.list.total))
             {
                 // set list as complete
                 l.Spec.list.state = "complete";
-
-                // patch list with updated state
-                await zK8sList.generic.PatchNamespacedAsync<CrdList>(
-                        new V1Patch(l, V1Patch.PatchType.MergePatch),
-                        Globals.service.kubeconfig.Namespace,
-                        l.Metadata.Name);
 
                 // send update to all interested
                 Dictionary<string, string> result = new Dictionary<string, string>();
@@ -159,6 +156,12 @@ namespace gge.K8sControllers
                 result.Add("list", l.Metadata.Name);
                 Globals.service.cm.SendToAll(JsonSerializer.Serialize(result));
             }
+
+            // patch list with updated total (& state)
+            await zK8sList.generic.PatchNamespacedAsync<CrdList>(
+                    new V1Patch(l, V1Patch.PatchType.MergePatch),
+                    Globals.service.kubeconfig.Namespace,
+                    l.Metadata.Name);
 
 
             return;
