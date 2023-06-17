@@ -4,6 +4,8 @@ using list.crd.list;
 using list.K8sHelpers;
 using list.crd.block;
 using list.CustomResourceDefinitions;
+using System.Net;
+using k8s.Models;
 
 namespace gge.K8sControllers
 {
@@ -92,30 +94,64 @@ namespace gge.K8sControllers
             Console.WriteLine("Addition/Modify detected: " + b.Metadata.Name);
             Console.WriteLine("b.Spec.block.state: " + b.Spec.block.state);
 
+            // get list associated with block
+            CrdList l = null;
+            try
+            {
+                // otherwise, if listId is provided, return all properties of list
+                l = await zK8sList.generic.ReadNamespacedAsync<CrdList>(
+                        Globals.service.kubeconfig.Namespace, b.Spec.block.list);
+            }
+            catch (k8s.Autorest.HttpOperationException ex)
+            {
+                /*
+                Console.WriteLine("** one **");
+                */
+                Console.WriteLine("StatusCode: " + ex.Response.StatusCode);
+                /*
+                Console.WriteLine("   Message: " + ex.Message);
+                Console.WriteLine("      Data: " + ex.InnerException.Data);
+                */
+
+                // abort, list not found
+                return;
+            }
+
 
             // merge blocks if possible
 
             // if all blocks are complete, set list to complete
 
-            /*
+
+            // temporary check for complete before merge is implemented
+            long total = 0;
+
             // loop through all blocks associated with deleted list & delete
             CustomResourceList<CrdBlock> blocks = await zK8sBlock.generic.ListNamespacedAsync<CustomResourceList<CrdBlock>>(
                     Globals.service.kubeconfig.Namespace);
-            Console.WriteLine("items.count: " + blocks.Items.Count());
             foreach (CrdBlock block in blocks.Items)
             {
                 // is this block associated with the list?
-                Console.WriteLine(block.Spec.block.list + " vs " + l.Metadata.Name);
-                if (block.Spec.block.list.Equals(l.Metadata.Name))
+                Console.WriteLine(block.Spec.block.list + " vs " + b.Spec.block.list);
+                if (block.Spec.block.list.Equals(b.Spec.block.list) && block.Spec.block.state.Equals("complete"))
                 {
-                    // if yes, then delete block 
-                    Console.WriteLine("delete block: " + block.Metadata.Name);
-                    zK8sBlock.generic.DeleteNamespacedAsync<CrdBlock>(
-                            Globals.service.kubeconfig.Namespace,
-                            block.Metadata.Name);
+                    // if yes, add to total
+                    total += long.Parse(block.Spec.block.size);
                 }
             }
-            */
+
+            // check if total is expected total
+            if (total == long.Parse(l.Spec.list.total))
+            {
+                // set list as complete
+                l.Spec.list.state = "complete";
+
+                // patch list with updated state
+                await zK8sList.generic.PatchNamespacedAsync<CrdList>(
+                        new V1Patch(l, V1Patch.PatchType.MergePatch),
+                        Globals.service.kubeconfig.Namespace,
+                        l.Metadata.Name);
+            }
 
 
             return;
