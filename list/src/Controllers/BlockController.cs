@@ -75,7 +75,7 @@ namespace list.Controllers
             // first, are there existing blocks which have timed out which we can hand out again?
             CustomResourceList<CrdBlock> blocks = await zK8sBlock.generic.ListNamespacedAsync<CustomResourceList<CrdBlock>>(Globals.service.kubeconfig.Namespace);
 
-            Dictionary<string, string> result = new Dictionary<string, string>();
+            Block result = new Block();
             foreach (CrdBlock b in blocks.Items)
             {
                 // check that blocks are associated with this list
@@ -96,13 +96,10 @@ namespace list.Controllers
                         continue;
                     }
 
-                    // format object to return as json
-                    result.Add("block", b.Metadata.Name);
-
                     // release semaphore lock
                     Globals.semaphore.Release();
 
-                    return Ok(result);
+                    return Ok(b.Spec.block);
                 }
             }
 
@@ -146,7 +143,10 @@ namespace list.Controllers
                     Globals.service.kubeconfig.Namespace, i.Metadata.Name);
 
             // format object to return as json
-            result.Add("block", block);
+            result.when = "??";
+            result.list = list;
+            result.index = index;
+            result.size = size;
 
             // release semaphore lock
             Globals.semaphore.Release();
