@@ -4,6 +4,7 @@ using k8s.Models;
 using list.crd.block;
 using list.crd.list;
 using list.CustomResourceDefinitions;
+using list.Helpers;
 using list.K8sHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -122,9 +123,9 @@ namespace list.Controllers
                 if (b.Spec.block.list.Equals(list))
                 {
                     // has the block timed out?
-                    DateTime when = DateTimeOffset.FromUnixTimeMilliseconds(
+                    DateTime when = Timestamp.getUtcDateTimeFromTimestampInMilliseconds(
                         long.Parse(b.Spec.block.when)
-                        ).UtcDateTime;
+                        );
                     Console.WriteLine("timestamp: " + when);
                     Console.WriteLine("dt.utcnow: " + DateTime.UtcNow);
                     // debug
@@ -168,7 +169,7 @@ namespace list.Controllers
             }
 
             // create block
-            block.when = DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
+            block.when = Timestamp.getUtcTimestampInMilliseconds().ToString();
             block.list = list;
             block.owner = User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"));
             block.index = index;

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Reflection;
 using list.crd.list;
+using list.Helpers;
 
 namespace list.K8sHelpers
 {
@@ -30,7 +31,7 @@ namespace list.K8sHelpers
             )
         {
             // calculate timestamp
-            string when = (DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond).ToString();
+            string when = Timestamp.getUtcTimestampInMilliseconds().ToString();
 
             // new list instance
             var l = new list.crd.list.CrdList()

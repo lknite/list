@@ -10,6 +10,7 @@ using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using list.crd.block;
+using list.Helpers;
 
 namespace list.K8sHelpers
 {
@@ -28,7 +29,7 @@ namespace list.K8sHelpers
             )
         {
             // calculate timestamp
-            string when = (DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond).ToString();
+            string when = Timestamp.getUtcTimestampInMilliseconds().ToString();
             // default name is timestamp
             string name = when;
 
