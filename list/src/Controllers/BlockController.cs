@@ -126,11 +126,13 @@ namespace list.Controllers
                     DateTime when = Timestamp.getUtcDateTimeFromTimestampInMilliseconds(
                         long.Parse(b.Spec.block.when)
                         );
+                    Console.WriteLine("");
                     Console.WriteLine(" timestamp: " + when);
                     Console.WriteLine("timeout at: " + (when).AddSeconds(l.Spec.list.timeout));
 
                     // if the block has not timed out, then skip to next block
                     Console.WriteLine((when).AddSeconds(l.Spec.list.timeout) + " vs " + DateTime.UtcNow);
+                    Console.WriteLine("compare: " + DateTime.Compare((when).AddSeconds(l.Spec.list.timeout), DateTime.UtcNow));
                     if (DateTime.Compare((when).AddSeconds(l.Spec.list.timeout), DateTime.UtcNow) < 0)
                     {
                         Console.WriteLine("   pending: " + (when).AddSeconds(l.Spec.list.timeout));
@@ -138,17 +140,10 @@ namespace list.Controllers
                     }
                     Console.WriteLine("  timedout: " + DateTime.UtcNow);
 
-                    // patch block with updated timestamp
+                    // update timestamp
                     b.Spec.block.when = Timestamp.getUtcTimestampInMilliseconds().ToString();
-                    /*
-                    string patchStr = "{ \"spec\": {"
-                                    + "\"players\": "
-                                    + JsonSerializer.Serialize(g.Spec.players, new JsonSerializerOptions { WriteIndented = true })
-                                    + ","
-                                    + "\"watchers\": "
-                                    + JsonSerializer.Serialize(g.Spec.watchers, new JsonSerializerOptions { WriteIndented = true })
-                                    + "} }";
-                    */
+
+                    // patch block with updated timestamp
                     await zK8sBlock.generic.PatchNamespacedAsync<CrdBlock>(
                             new V1Patch(b, V1Patch.PatchType.MergePatch),
                             Globals.service.kubeconfig.Namespace,
