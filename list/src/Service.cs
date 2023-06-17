@@ -16,6 +16,7 @@ namespace list
 
         //
         public ListK8sController listController;
+        public BlockK8sController blockController;
 
         public Service()
         {
@@ -38,6 +39,7 @@ namespace list
 
             // Now that we have our kubeconfig, go ahead and instantiate the k8s controllers
             listController = new ListK8sController();
+            blockController = new BlockK8sController();
 
             // Check for required environment variable(s)
             List<string> required = new List<string>();
@@ -61,6 +63,7 @@ namespace list
 
             // Start up all the k8s controllers
             listController.Listen();
+            blockController.Listen();
 
             return Task.CompletedTask;
         }
