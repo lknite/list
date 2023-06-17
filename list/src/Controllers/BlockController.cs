@@ -141,9 +141,7 @@ namespace list.Controllers
             {
                 Console.WriteLine("** two **");
                 Console.WriteLine(" Exception: " + ex);
-                Console.WriteLine("StatusCode: " + ex.Response.StatusCode);
                 Console.WriteLine("   Message: " + ex.Message);
-                Console.WriteLine("      Data: " + ex.InnerException.Data);
             }
 
             if (!l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))))
