@@ -36,6 +36,9 @@ namespace list
             // Use the config object to create a client.
             kubeclient = new Kubernetes(kubeconfig);
 
+            // Now that we have our kubeconfig, go ahead and instantiate the k8s controllers
+            listController = new ListK8sController();
+
             // Check for required environment variable(s)
             List<string> required = new List<string>();
             required.Add("OIDC_USER_CLAIM");
