@@ -122,7 +122,10 @@ namespace list.Controllers
             }
             catch (k8s.Autorest.HttpOperationException ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine(" Exception: "+ ex);
+                Console.WriteLine("StatusCode: "+ ex.Response.StatusCode);
+                Console.WriteLine("   Message: "+ ex.Message);
+                Console.WriteLine("      Data: "+ ex.InnerException.Data);
 
                 if (ex.Response.StatusCode.Equals(StatusCodes.Status404NotFound)) {
 
