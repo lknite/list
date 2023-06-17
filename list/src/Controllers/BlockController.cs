@@ -24,25 +24,39 @@ namespace list.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet()]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(/*string? block = null*/)
         {
             Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
             Console.WriteLine("Email: " + User.FindFirstValue("email"));
 
-            CustomResourceList<CrdBlock> blocks = await zK8sBlock.generic.ListNamespacedAsync<CustomResourceList<CrdBlock>>(Globals.service.kubeconfig.Namespace);
-
-            List<Block> result = new List<Block>();
-            foreach (CrdBlock b in blocks.Items)
+            /*
+            // by default, if no listId is provided, return a listing of all lists owned by user & allowAnnonymous
+            if (list == null)
             {
-                // only return blocks owned by user
-                if (b.Spec.block.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))))
+            */
+                CustomResourceList<CrdBlock> blocks = await zK8sBlock.generic.ListNamespacedAsync<CustomResourceList<CrdBlock>>(Globals.service.kubeconfig.Namespace);
+
+                List<Block> result = new List<Block>();
+                foreach (CrdBlock item in blocks.Items)
                 {
-                    result.Add(b.Spec.block);
+                    // only return blocks owned by user
+                    if (item.Spec.block.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))))
+                    {
+                        result.Add(item.Spec.block);
+                    }
                 }
+
+
+                return Ok(result);
+            /*
             }
 
+            // otherwise, if listId is provided, return all properties of list
+            CrdBlock b = await zK8sBlock.generic.ReadNamespacedAsync<CrdBlock>(
+                    Globals.service.kubeconfig.Namespace, list);
 
-            return Ok(result);
+            return Ok(b.Spec.block);
+            */
         }
 
         [HttpPatch()]
