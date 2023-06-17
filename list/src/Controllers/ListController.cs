@@ -115,7 +115,6 @@ namespace list.Controllers
 
             // remove 'new' notice sent to websocket, and return instead 'id' for rest call
             result.Remove("event");
-            result.Add("list", id);
             return Ok(result);
         }
 
