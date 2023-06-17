@@ -23,24 +23,40 @@ namespace list.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet()]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get(string? listId = null)
         {
             Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
             Console.WriteLine("Email: " + User.FindFirstValue("email"));
 
-            CustomResourceList<CrdList> lists = await zK8sList.generic.ListNamespacedAsync<CustomResourceList<CrdList>>(Globals.service.kubeconfig.Namespace);
-
-            List<string> result = new List<string>();
-            foreach (CrdList l in lists.Items)
+            // by default, if no listId is provided, return a listing of all lists owned by user & allowAnnonymous
+            if (listId == null)
             {
-                // only return lists owned by user
-                if (l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")))) {
-                    result.Add(l.Metadata.Name);
+                CustomResourceList<CrdList> lists = await zK8sList.generic.ListNamespacedAsync<CustomResourceList<CrdList>>(Globals.service.kubeconfig.Namespace);
+
+                List<string> result = new List<string>();
+                foreach (CrdList l in lists.Items)
+                {
+                    // only return lists owned by user
+                    if (l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))))
+                    {
+                        result.Add(l.Metadata.Name);
+                    }
+                    // or set as allowAnonymous
+                    if (l.Spec.list.allowAnonymous)
+                    {
+                        result.Add(l.Metadata.Name);
+                    }
                 }
+
+
+                return Ok(result);
             }
 
+            // otherwise, if listId is provided, return all properties of list
+            CrdList list = await zK8sList.generic.ReadNamespacedAsync<CrdList>(
+                    Globals.service.kubeconfig.Namespace, listId);
 
-            return Ok(result);
+            return Ok(list);
         }
 
 
@@ -92,9 +108,11 @@ namespace list.Controllers
             await zK8sBlock.Post(block, true);
 
             // send to websocket of all who are able to process this list (if anonymous then to all)
-            Globals.service.cm.SendToAll(JsonSerializer.Serialize(list));
+            Dictionary <string, string> result = new Dictionary<string, string>();
+            result.Add("new", id);
+            Globals.service.cm.SendToAll(JsonSerializer.Serialize(result));
 
-            return Ok(list);
+            return Ok(result);
         }
 
 
