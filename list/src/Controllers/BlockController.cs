@@ -128,12 +128,18 @@ namespace list.Controllers
             }
 
             // create block
+            result.when = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString();
+            result.list = list;
+            result.owner = User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"));
+            result.index = index;
+            result.size = size;
+
             string block = await zK8sBlock.Post(
-                (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString(),
-                list,
-                User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")),
-                index,
-                size
+                result.when,
+                result.list,
+                result.owner,
+                result.index,
+                result.size
                 );
 
             // update index block
@@ -141,12 +147,6 @@ namespace list.Controllers
             await zK8sBlock.generic.PatchNamespacedAsync<CrdBlock>(
                     new V1Patch(i, V1Patch.PatchType.MergePatch),
                     Globals.service.kubeconfig.Namespace, i.Metadata.Name);
-
-            // format object to return as json
-            result.when = "??";
-            result.list = list;
-            result.index = index;
-            result.size = size;
 
             // release semaphore lock
             Globals.semaphore.Release();
