@@ -12,6 +12,7 @@ namespace list.Helpers
         {
             return DateTimeOffset.FromUnixTimeMilliseconds( milliseconds ).UtcDateTime;
         }
+        /*
         public static long getTimestampInMilliseconds()
         {
             return DateTimeOffset.Now.ToUnixTimeMilliseconds();
@@ -20,5 +21,6 @@ namespace list.Helpers
         {
             return DateTimeOffset.FromUnixTimeMilliseconds( milliseconds ).DateTime;
         }
+        */
     }
 }
