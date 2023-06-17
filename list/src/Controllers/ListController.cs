@@ -152,13 +152,14 @@ namespace list.Controllers
             Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
             Console.WriteLine("Email: " + User.FindFirstValue("email"));
 
-            // only list owner is allowed to delete list
-            CrdList l = await zK8sList.generic.ReadNamespacedAsync<CrdList>(Globals.service.kubeconfig.Namespace, list);
-            if (!l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")))) {
-                return StatusCode(StatusCodes.Status403Forbidden);
-            }
-
             try {
+                // only list owner is allowed to delete list
+                CrdList l = await zK8sList.generic.ReadNamespacedAsync<CrdList>(Globals.service.kubeconfig.Namespace, list);
+                if (!l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")))) {
+                    return StatusCode(StatusCodes.Status403Forbidden);
+                }
+
+                // delete list
                 await zK8sList.generic.DeleteNamespacedAsync<CrdList>(Globals.service.kubeconfig.Namespace, list);
             }
             catch (k8s.Autorest.HttpOperationException ex)
