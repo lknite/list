@@ -202,6 +202,7 @@ namespace list.Controllers
             block.size = size;
 
             string id = await zK8sBlock.Post(block);
+            block.block = id;
 
             // update index block
             i.Spec.block.index = (Int32.Parse(index) + Int32.Parse(size)).ToString();
