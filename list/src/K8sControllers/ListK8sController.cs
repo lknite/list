@@ -100,6 +100,7 @@ namespace gge.K8sControllers
             // loop through all blocks associated with deleted list & delete
             CustomResourceList<CrdBlock> blocks = await zK8sBlock.generic.ListNamespacedAsync<CustomResourceList<CrdBlock>>(
                     Globals.service.kubeconfig.Namespace);
+            Console.WriteLine("items.count: " + blocks.Items.Count());
             foreach (CrdBlock block in blocks.Items)
             {
                 // is this block associated with the list?
