@@ -107,7 +107,7 @@ namespace list.Controllers
             if (!l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))))
             {
                 // release semaphore lock
-                Globals.semaphore.Wait();
+                Globals.semaphore.Release();
 
                 return StatusCode(StatusCodes.Status403Forbidden);
             }
