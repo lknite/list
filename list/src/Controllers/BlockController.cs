@@ -182,19 +182,19 @@ namespace list.Controllers
                     DateTime when = Timestamp.getUtcDateTimeFromTimestampInMilliseconds(
                         long.Parse(b.Spec.block.when)
                         );
-                    Console.WriteLine("");
-                    Console.WriteLine(" timestamp: " + when);
-                    Console.WriteLine("timeout at: " + (when).AddSeconds(l.Spec.list.timeout));
+                    //Console.WriteLine("");
+                    //Console.WriteLine(" timestamp: " + when);
+                    //Console.WriteLine("timeout at: " + (when).AddSeconds(l.Spec.list.timeout));
 
                     // if the block has not timed out, then skip to next block
-                    Console.WriteLine((when).AddSeconds(l.Spec.list.timeout) + " vs " + DateTime.UtcNow);
-                    Console.WriteLine("compare: " + DateTime.Compare((when).AddSeconds(l.Spec.list.timeout), DateTime.UtcNow));
+                    //Console.WriteLine((when).AddSeconds(l.Spec.list.timeout) + " vs " + DateTime.UtcNow);
+                    //Console.WriteLine("compare: " + DateTime.Compare((when).AddSeconds(l.Spec.list.timeout), DateTime.UtcNow));
                     if (DateTime.Compare((when).AddSeconds(l.Spec.list.timeout), DateTime.UtcNow) > 0)
                     {
-                        Console.WriteLine("   pending: " + (when).AddSeconds(l.Spec.list.timeout));
+                        //Console.WriteLine("   pending: " + (when).AddSeconds(l.Spec.list.timeout));
                         continue;
                     }
-                    Console.WriteLine("  timedout: " + DateTime.UtcNow);
+                    //Console.WriteLine("  timedout: " + DateTime.UtcNow);
 
                     // update timestamp & owner
                     b.Spec.block.when = Timestamp.getUtcTimestampInMilliseconds().ToString();
