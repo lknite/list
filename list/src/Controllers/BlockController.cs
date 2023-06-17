@@ -127,10 +127,10 @@ namespace list.Controllers
                         long.Parse(b.Spec.block.when)
                         );
                     Console.WriteLine(" timestamp: " + when);
-                    Console.WriteLine("timeout at: " + (DateTime.UtcNow).AddSeconds(l.Spec.list.timeout));
+                    Console.WriteLine("timeout at: " + (when).AddSeconds(l.Spec.list.timeout));
 
                     // if the block has not timed out, then skip to next block
-                    if (when < (DateTime.UtcNow).AddSeconds(l.Spec.list.timeout))
+                    if ((when).AddSeconds(l.Spec.list.timeout) < DateTime.UtcNow)
                     {
                         continue;
                     }
