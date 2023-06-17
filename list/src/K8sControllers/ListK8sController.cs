@@ -49,6 +49,7 @@ namespace gge.K8sControllers
                                 break;
                             */
                             case WatchEventType.Deleted:
+                                await Process(item);
                                 break;
                             /*
                             case WatchEventType.Error:
