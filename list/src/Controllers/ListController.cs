@@ -109,12 +109,12 @@ namespace list.Controllers
 
             // send to websocket of all who are able to process this list (if anonymous then to all)
             Dictionary <string, string> result = new Dictionary<string, string>();
-            result.Add("type", "new");
+            result.Add("event", "new");
             result.Add("list", id);
             Globals.service.cm.SendToAll(JsonSerializer.Serialize(result));
 
             // remove 'new' notice sent to websocket, and return instead 'id' for rest call
-            result.Remove("type");
+            result.Remove("event");
             result.Add("list", id);
             return Ok(result);
         }
