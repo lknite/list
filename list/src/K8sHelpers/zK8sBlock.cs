@@ -31,7 +31,7 @@ namespace list.K8sHelpers
             // calculate timestamp
             string when = Timestamp.getUtcTimestampInMilliseconds().ToString();
             // default name is timestamp
-            string name = when;
+            string name = block.list +"-"+ when;
 
             // an index block has the same name as the list name
             if (isIndex)
