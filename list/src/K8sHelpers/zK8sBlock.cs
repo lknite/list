@@ -28,7 +28,7 @@ namespace list.K8sHelpers
             )
         {
             // calculate timestamp
-            string when = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString();
+            string when = (DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond).ToString();
             // default name is timestamp
             string name = when;
 

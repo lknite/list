@@ -30,7 +30,7 @@ namespace list.K8sHelpers
             )
         {
             // calculate timestamp
-            string when = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString();
+            string when = (DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond).ToString();
 
             // new list instance
             var l = new list.crd.list.CrdList()
@@ -39,7 +39,7 @@ namespace list.K8sHelpers
                 ApiVersion = group + "/" + version,
                 Metadata = new V1ObjectMeta
                 {
-                    Name = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString(),
+                    Name = (DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond).ToString(),
                     NamespaceProperty = Globals.service.kubeconfig.Namespace,
                 },
                 // spec

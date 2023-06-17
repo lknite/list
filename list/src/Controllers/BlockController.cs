@@ -168,7 +168,7 @@ namespace list.Controllers
             }
 
             // create block
-            block.when = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString();
+            block.when = (DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond).ToString();
             block.list = list;
             block.owner = User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"));
             block.index = index;
