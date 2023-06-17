@@ -158,7 +158,25 @@ namespace list.Controllers
                 return StatusCode(StatusCodes.Status403Forbidden);
             }
 
-            await zK8sList.generic.DeleteNamespacedAsync<CrdList>(Globals.service.kubeconfig.Namespace, list);
+            try {
+                await zK8sList.generic.DeleteNamespacedAsync<CrdList>(Globals.service.kubeconfig.Namespace, list);
+            }
+            catch (k8s.Autorest.HttpOperationException ex)
+            {
+                /*
+                Console.WriteLine("** one **");
+                */
+                Console.WriteLine("StatusCode: " + ex.Response.StatusCode);
+                /*
+                Console.WriteLine("   Message: " + ex.Message);
+                Console.WriteLine("      Data: " + ex.InnerException.Data);
+                */
+
+                if (ex.Response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+            }
 
 
             return Ok();
