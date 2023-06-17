@@ -133,7 +133,7 @@ namespace gge.K8sControllers
             foreach (CrdBlock block in blocks.Items)
             {
                 // is this block associated with the list?
-                Console.WriteLine(block.Spec.block.list + " vs " + b.Spec.block.list);
+                //Console.WriteLine(block.Spec.block.list + " vs " + b.Spec.block.list);
                 if (block.Spec.block.list.Equals(b.Spec.block.list) && block.Spec.block.state.Equals("complete"))
                 {
                     // if yes, add to total
