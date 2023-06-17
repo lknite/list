@@ -64,38 +64,51 @@ namespace list.Controllers
             Console.WriteLine("Email: " + User.FindFirstValue("email"));
 
             // create a list
-            string list = await zK8sList.Post(
-                User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")),
-                task,
-                action,
-                "pending",
-                total,
-                size,
-                priority,
-                "0",
-                "0",
-                timeout,
-                isPublic,
-                allowAnonymous,
-                attrs
+            List list = new List();
+            list.owner = User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"));
+            list.total = total;
+            list.size = size;
+            list.task = task;
+            list.action = action;
+            list.state = "pending";
+            list.priority = priority;
+            list.complete = "0";
+            list.percent = "0";
+            list.timeout = timeout;
+            list.isPublic = isPublic;
+            list.allowAnonymous = allowAnonymous;
+            list.attrs = attrs;
+
+            // create a list
+            string id = await zK8sList.Post(
+                list.owner,
+                list.task,
+                list.action,
+                list.state,
+                list.total,
+                list.size,
+                list.priority,
+                list.complete,
+                list.percent,
+                list.timeout,
+                list.isPublic,
+                list.allowAnonymous,
+                list.attrs
                 );
 
             // create an index block with list as the name
             await zK8sBlock.Post(
-                list,
-                list,
-                User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")),
+                id,
+                id,
+                list.owner,
                 "0",
-                total
+                list.total
                 );
 
-            // format object to return as json
-            Dictionary<string, string> result = new Dictionary<string, string>();
-            result.Add("list", list);
-
             // send to websocket of all who are able to process this list (if anonymous then to all)
+            Globals.service.cm.SendToAll(JsonSerializer.Serialize(list));
 
-            return Ok(result);
+            return Ok(list);
         }
 
 
