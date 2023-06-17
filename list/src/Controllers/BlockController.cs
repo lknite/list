@@ -61,6 +61,11 @@ namespace list.Controllers
             */
         }
 
+        /// <summary>
+        /// set block as complete
+        /// </summary>
+        /// <param name="block"></param>
+        /// <returns></returns>
         [HttpPatch()]
         public async Task<IActionResult> Patch(
                 string block
