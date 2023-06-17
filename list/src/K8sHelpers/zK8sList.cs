@@ -26,23 +26,11 @@ namespace list.K8sHelpers
         public static GenericClient generic = new GenericClient(Globals.service.kubeclient, group, version, plural);
 
         public static async Task<string> Post(
-                string owner,
-                string task,
-                string action,
-                string state,
-                string total,
-                string size,
-                int priority,
-                string complete,
-                string percent,
-                int timeout,
-                bool isPublic,
-                bool allowAnonymous,
-                List<Attr> attrs
+            List list
             )
         {
-            // parse claims
-            //JsonElement o = JsonSerializer.Deserialize<JsonElement>(claims);
+            // calculate timestamp
+            string when = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString();
 
             // new list instance
             var l = new list.crd.list.CrdList()
@@ -59,24 +47,24 @@ namespace list.K8sHelpers
                 {
                     list = new list.crd.list.List()
                     {
-                        owner = owner,
-                        task = task,
-                        action = action,
-                        state = state,
-                        total = total,
-                        size = size,
-                        priority = priority,
-                        complete = complete,
-                        percent = percent,
-                        timeout = timeout,
-                        isPublic = isPublic,
-                        allowAnonymous = allowAnonymous,
-                        ts_add = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString(),
+                        owner = list.owner,
+                        task = list.task,
+                        action = list.action,
+                        state = list.state,
+                        total = list.total,
+                        size = list.size,
+                        priority = list.priority,
+                        complete = list.complete,
+                        percent = list.percent,
+                        timeout = list.timeout,
+                        isPublic = list.isPublic,
+                        allowAnonymous = list.allowAnonymous,
+                        ts_add = when,
                         ts_start = "",
                         ts_suspend = "",
                         ts_resume = "",
                         ts_complete = "",
-                        attrs = attrs
+                        attrs = list.attrs
                     }
                 }
             };

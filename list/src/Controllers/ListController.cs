@@ -1,6 +1,7 @@
 using k8s;
 using k8s.Autorest;
 using k8s.Models;
+using list.crd.block;
 using list.crd.list;
 using list.CustomResourceDefinitions;
 using list.K8sHelpers;
@@ -80,30 +81,15 @@ namespace list.Controllers
             list.attrs = attrs;
 
             // create a list
-            string id = await zK8sList.Post(
-                list.owner,
-                list.task,
-                list.action,
-                list.state,
-                list.total,
-                list.size,
-                list.priority,
-                list.complete,
-                list.percent,
-                list.timeout,
-                list.isPublic,
-                list.allowAnonymous,
-                list.attrs
-                );
+            string id = await zK8sList.Post(list);
 
             // create an index block with list as the name
-            await zK8sBlock.Post(
-                id,
-                id,
-                list.owner,
-                "0",
-                list.total
-                );
+            Block block = new Block();
+            block.list = id;
+            block.owner = list.owner;
+            block.index = "0";
+            block.size = list.total;
+            await zK8sBlock.Post(block, true);
 
             // send to websocket of all who are able to process this list (if anonymous then to all)
             Globals.service.cm.SendToAll(JsonSerializer.Serialize(list));

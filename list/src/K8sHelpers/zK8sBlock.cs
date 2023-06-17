@@ -9,7 +9,7 @@ using System.Diagnostics; using System.IO;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
-
+using list.crd.block;
 
 namespace list.K8sHelpers
 {
@@ -23,15 +23,20 @@ namespace list.K8sHelpers
         public static GenericClient generic = new GenericClient(Globals.service.kubeclient, group, version, plural);
 
         public static async Task<string> Post(
-                string name,
-                string list,
-                string owner,
-                string index,
-                string size
+                Block block,
+                bool isIndex = false
             )
         {
-            // parse claims
-            //JsonElement o = JsonSerializer.Deserialize<JsonElement>(claims);
+            // calculate timestamp
+            string when = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString();
+            // default name is timestamp
+            string name = when;
+
+            // an index block has the same name as the list name
+            if (isIndex)
+            {
+                name = block.list;
+            }
 
             // new block instance
             var b = new list.crd.block.CrdBlock()
@@ -48,12 +53,12 @@ namespace list.K8sHelpers
                 {
                     block = new list.crd.block.Block()
                     {
-                        list = list,
-                        owner = owner,
-                        index = index,
-                        size = size,
+                        list = block.list,
+                        owner = block.owner,
+                        index = block.index,
+                        size = block.size,
                         state = "",
-                        when = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString()
+                        when = when
                     }
                 }
             };

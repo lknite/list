@@ -101,7 +101,7 @@ namespace list.Controllers
             // first, are there existing blocks which have timed out which we can hand out again?
             CustomResourceList<CrdBlock> blocks = await zK8sBlock.generic.ListNamespacedAsync<CustomResourceList<CrdBlock>>(Globals.service.kubeconfig.Namespace);
 
-            Block result = new Block();
+            Block block = new Block();
             foreach (CrdBlock b in blocks.Items)
             {
                 // check that blocks are associated with this list
@@ -154,19 +154,13 @@ namespace list.Controllers
             }
 
             // create block
-            result.when = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString();
-            result.list = list;
-            result.owner = User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"));
-            result.index = index;
-            result.size = size;
+            block.when = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString();
+            block.list = list;
+            block.owner = User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"));
+            block.index = index;
+            block.size = size;
 
-            string block = await zK8sBlock.Post(
-                result.when,
-                result.list,
-                result.owner,
-                result.index,
-                result.size
-                );
+            string id = await zK8sBlock.Post(block);
 
             // update index block
             i.Spec.block.index = (Int32.Parse(index) + Int32.Parse(size)).ToString();
@@ -177,7 +171,7 @@ namespace list.Controllers
             // release semaphore lock
             Globals.semaphore.Release();
 
-            return Ok(result);
+            return Ok(block);
         }
 
 
