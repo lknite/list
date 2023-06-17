@@ -25,12 +25,12 @@ namespace list.Helpers
             //httpWebRequest.Headers.Add("XApiKey", Environment.GetEnvironmentVariable("APIKEY"));
             //httpWebRequest.Headers.Add("Authorization", "Bearer " + await Authenticate.GetOpenIdToken());
 
-            Console.WriteLine("URL: " + URL);
+            //Console.WriteLine("URL: " + URL);
             var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
             using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
             {
                 claims = streamReader.ReadToEnd();
-                Console.WriteLine(claims);
+                //Console.WriteLine(claims);
 
                 /*
                 JsonElement o = JsonSerializer.Deserialize<JsonElement>(tmp);
