@@ -67,6 +67,7 @@ namespace gge.K8sControllers
                 }
                 catch (k8s.Autorest.HttpOperationException ex)
                 {
+                    Console.WriteLine("Exception? " + ex);
                     switch (ex.Response.StatusCode)
                     {
                         // crd is missing, sleep to avoid an error loop
