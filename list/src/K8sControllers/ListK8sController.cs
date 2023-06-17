@@ -103,7 +103,7 @@ namespace gge.K8sControllers
             foreach (CrdBlock block in blocks.Items)
             {
                 // is this block associated with the list?
-                Console.WriteLine(block.Spec.block.list + " vs " + l.Metadata.Name);
+                //Console.WriteLine(block.Spec.block.list + " vs " + l.Metadata.Name);
                 if (block.Spec.block.list.Equals(l.Metadata.Name))
                 {
                     // if yes, then delete block 

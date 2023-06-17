@@ -91,11 +91,15 @@ namespace list.Controllers
             // update timestamp
             b.Spec.block.state = "complete";
 
-            // patch block with updated state
-            await zK8sBlock.generic.PatchNamespacedAsync<CrdBlock>(
-                    new V1Patch(b, V1Patch.PatchType.MergePatch),
-                    Globals.service.kubeconfig.Namespace,
-                    b.Metadata.Name);
+            try
+            {
+                // patch block with updated state
+                await zK8sBlock.generic.PatchNamespacedAsync<CrdBlock>(
+                        new V1Patch(b, V1Patch.PatchType.MergePatch),
+                        Globals.service.kubeconfig.Namespace,
+                        b.Metadata.Name);
+            }
+            catch { }
 
             // release semaphore lock
             Globals.semaphore.Release();
