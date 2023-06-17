@@ -118,6 +118,12 @@ namespace gge.K8sControllers
                 return;
             }
 
+            // if list has already been marked complete, skip additional block processing
+            if (l.Spec.list.state.Equals("complete"))
+            {
+                return;
+            }
+
 
             // merge blocks if possible
 
