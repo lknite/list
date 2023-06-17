@@ -65,25 +65,36 @@ namespace list.Controllers
                 string block
             )
         {
+            // acquire semaphore lock
+            Globals.semaphore.Wait();
+
+            // debug
             Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
             Console.WriteLine("Email: " + User.FindFirstValue("email"));
 
-            /*
-            CustomResourceList<CrdBlock> blocks = await zK8sBlock.generic.ListNamespacedAsync<CustomResourceList<CrdBlock>>(Globals.service.kubeconfig.Namespace);
-
-            List<Block> result = new List<Block>();
-            foreach (CrdBlock b in blocks.Items)
+            // only block owner is allowed to set block as complete
+            CrdBlock b = await zK8sBlock.generic.ReadNamespacedAsync<CrdBlock>(Globals.service.kubeconfig.Namespace, block);
+            if (!b.Spec.block.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))))
             {
-                // only return blocks owned by user
-                if (b.Spec.block.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))))
-                {
-                    result.Add(b.Spec.block);
-                }
+                // release semaphore lock
+                Globals.semaphore.Release();
+
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
-            */
 
+            // update timestamp
+            b.Spec.block.state = "complete";
 
-            return Ok();
+            // patch block with updated state
+            await zK8sBlock.generic.PatchNamespacedAsync<CrdBlock>(
+                    new V1Patch(b, V1Patch.PatchType.MergePatch),
+                    Globals.service.kubeconfig.Namespace,
+                    b.Metadata.Name);
+
+            // release semaphore lock
+            Globals.semaphore.Release();
+
+            return Ok(block);
         }
 
 
@@ -120,7 +131,7 @@ namespace list.Controllers
             foreach (CrdBlock b in blocks.Items)
             {
                 // check that blocks are associated with this list
-                if (b.Spec.block.list.Equals(list))
+                if (b.Spec.block.list.Equals(list) && b.Spec.block.state.Equals("active"))
                 {
                     // has the block timed out?
                     DateTime when = Timestamp.getUtcDateTimeFromTimestampInMilliseconds(
@@ -140,8 +151,9 @@ namespace list.Controllers
                     }
                     Console.WriteLine("  timedout: " + DateTime.UtcNow);
 
-                    // update timestamp
+                    // update timestamp & owner
                     b.Spec.block.when = Timestamp.getUtcTimestampInMilliseconds().ToString();
+                    b.Spec.block.owner = User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"));
 
                     // patch block with updated timestamp
                     await zK8sBlock.generic.PatchNamespacedAsync<CrdBlock>(
