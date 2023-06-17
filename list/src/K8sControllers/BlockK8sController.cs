@@ -6,6 +6,7 @@ using list.crd.block;
 using list.CustomResourceDefinitions;
 using System.Net;
 using k8s.Models;
+using System.Text.Json;
 
 namespace gge.K8sControllers
 {
@@ -151,6 +152,12 @@ namespace gge.K8sControllers
                         new V1Patch(l, V1Patch.PatchType.MergePatch),
                         Globals.service.kubeconfig.Namespace,
                         l.Metadata.Name);
+
+                // send update to all interested
+                Dictionary<string, string> result = new Dictionary<string, string>();
+                result.Add("event", "complete");
+                result.Add("list", l.Metadata.Name);
+                Globals.service.cm.SendToAll(JsonSerializer.Serialize(result));
             }
 
 
