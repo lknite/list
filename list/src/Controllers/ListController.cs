@@ -56,7 +56,7 @@ namespace list.Controllers
             CrdList list = await zK8sList.generic.ReadNamespacedAsync<CrdList>(
                     Globals.service.kubeconfig.Namespace, listId);
 
-            return Ok(list);
+            return Ok(list.Spec.list);
         }
 
 
