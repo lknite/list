@@ -23,28 +23,28 @@ namespace list.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet()]
-        public async Task<IActionResult> Get(string? listId = null)
+        public async Task<IActionResult> Get(string? list = null)
         {
             Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
             Console.WriteLine("Email: " + User.FindFirstValue("email"));
 
             // by default, if no listId is provided, return a listing of all lists owned by user & allowAnnonymous
-            if (listId == null)
+            if (list == null)
             {
                 CustomResourceList<CrdList> lists = await zK8sList.generic.ListNamespacedAsync<CustomResourceList<CrdList>>(Globals.service.kubeconfig.Namespace);
 
                 List<string> result = new List<string>();
-                foreach (CrdList l in lists.Items)
+                foreach (CrdList item in lists.Items)
                 {
                     // only return lists owned by user
-                    if (l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))))
+                    if (item.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))))
                     {
-                        result.Add(l.Metadata.Name);
+                        result.Add(item.Metadata.Name);
                     }
                     // or set as allowAnonymous
-                    if (l.Spec.list.allowAnonymous)
+                    if (item.Spec.list.allowAnonymous)
                     {
-                        result.Add(l.Metadata.Name);
+                        result.Add(item.Metadata.Name);
                     }
                 }
 
@@ -53,10 +53,10 @@ namespace list.Controllers
             }
 
             // otherwise, if listId is provided, return all properties of list
-            CrdList list = await zK8sList.generic.ReadNamespacedAsync<CrdList>(
-                    Globals.service.kubeconfig.Namespace, listId);
+            CrdList l = await zK8sList.generic.ReadNamespacedAsync<CrdList>(
+                    Globals.service.kubeconfig.Namespace, list);
 
-            return Ok(list.Spec.list);
+            return Ok(l.Spec.list);
         }
 
 
