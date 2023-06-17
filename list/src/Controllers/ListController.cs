@@ -7,6 +7,7 @@ using list.CustomResourceDefinitions;
 using list.K8sHelpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -68,7 +69,7 @@ namespace list.Controllers
                 Console.WriteLine("      Data: " + ex.InnerException.Data);
                 */
 
-                if (ex.Response.StatusCode.Equals("Not Found"))
+                if (ex.Response.StatusCode.Equals(HttpStatusCode.NotFound))
                 {
                     return StatusCode(StatusCodes.Status404NotFound);
                 }
