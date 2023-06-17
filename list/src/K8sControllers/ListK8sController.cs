@@ -3,12 +3,13 @@ using k8s.Models;
 using k8s;
 using System.Text.Json;
 using list.crd.list;
+using list.K8sHelpers;
 
 namespace gge.K8sControllers
 {
     public class ListK8sController
     {
-        static string api = "lists";
+        static string api = "list";
         static string group = "list.aarr.xyz";
         static string version = "v1";
         static string plural = api + "s";
