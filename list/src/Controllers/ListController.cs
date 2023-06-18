@@ -156,6 +156,12 @@ namespace list.Controllers
             }
             catch { }
 
+            // send update to all interested
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            result.Add("event", l.Spec.list.state);
+            result.Add("list", l.Metadata.Name);
+            Globals.service.cm.SendToAll(JsonSerializer.Serialize(result));
+
             // release semaphore lock
             Globals.semaphore.Release();
 
