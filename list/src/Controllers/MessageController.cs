@@ -12,7 +12,7 @@ namespace list.Controllers
     public class MessageController : ControllerBase
     {
         /// <summary>
-        ///  send list owner a notification
+        /// send list owner a notification
         /// </summary>
         /// <param name="event"></param>
         /// <param name="list"></param>
