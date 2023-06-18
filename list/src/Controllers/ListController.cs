@@ -81,6 +81,76 @@ namespace list.Controllers
             return Ok(l.Spec.list);
         }
 
+        [HttpPatch()]
+        public async Task<IActionResult> Patch(
+            string list,
+            string state
+            )
+        {
+            // acquire semaphore lock
+            Globals.semaphore.Wait();
+
+            Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
+            Console.WriteLine("Email: " + User.FindFirstValue("email"));
+
+            CrdList l = null;
+            try
+            {
+                // only list owner is allowed to modify list
+                l = await zK8sList.generic.ReadNamespacedAsync<CrdList>(Globals.service.kubeconfig.Namespace, list);
+                if (!l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))))
+                {
+                    return StatusCode(StatusCodes.Status403Forbidden);
+                }
+            }
+            catch (k8s.Autorest.HttpOperationException ex)
+            {
+                /*
+                Console.WriteLine("** one **");
+                */
+                Console.WriteLine("StatusCode: " + ex.Response.StatusCode);
+                /*
+                Console.WriteLine("   Message: " + ex.Message);
+                Console.WriteLine("      Data: " + ex.InnerException.Data);
+                */
+
+                // release semaphore lock
+                Globals.semaphore.Release();
+
+                if (ex.Response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound);
+                }
+            }
+
+            // is state valid?
+            if (!((l.Spec.list.state == "active") && (state == "suspend")
+                || (l.Spec.list.state == "suspend") && (state == "resume")))
+            {
+                // release semaphore lock
+                Globals.semaphore.Release();
+
+                return StatusCode(StatusCodes.Status403Forbidden);
+            }
+
+            // update state
+            l.Spec.list.state = state;
+
+            try
+            {
+                // patch list with updated state
+                await zK8sList.generic.PatchNamespacedAsync<CrdList>(
+                        new V1Patch(l, V1Patch.PatchType.MergePatch),
+                        Globals.service.kubeconfig.Namespace,
+                        l.Metadata.Name);
+            }
+            catch { }
+
+            // release semaphore lock
+            Globals.semaphore.Release();
+
+            return Ok();
+        }
 
         /// <summary>
         /// create new list

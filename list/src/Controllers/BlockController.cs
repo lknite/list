@@ -124,7 +124,7 @@ namespace list.Controllers
             Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
             Console.WriteLine("Email: " + User.FindFirstValue("email"));
 
-            // only list owner is allowed to create a new block
+            // look up list
             CrdList l = null;
             try
             {
@@ -159,12 +159,22 @@ namespace list.Controllers
             }
             */
 
+            // only list owner is allowed to create a new block
             if (!l.Spec.list.owner.Equals(User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM"))))
             {
                 // release semaphore lock
                 Globals.semaphore.Release();
 
                 return StatusCode(StatusCodes.Status403Forbidden);
+            }
+
+            // list is active
+            if (!l.Spec.list.state.Equals("active"))
+            {
+                // release semaphore lock
+                Globals.semaphore.Release();
+
+                return StatusCode(StatusCodes.Status412PreconditionFailed);
             }
 
             // first, are there existing blocks which have timed out which we can hand out again?
