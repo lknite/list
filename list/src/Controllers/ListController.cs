@@ -149,6 +149,9 @@ namespace list.Controllers
         [HttpDelete()]
         public async Task<IActionResult> Delete(string list)
         {
+            // acquire semaphore lock
+            Globals.semaphore.Wait();
+
             Console.WriteLine("Username: " + User.FindFirstValue(Environment.GetEnvironmentVariable("OIDC_USER_CLAIM")));
             Console.WriteLine("Email: " + User.FindFirstValue("email"));
 
@@ -173,12 +176,17 @@ namespace list.Controllers
                 Console.WriteLine("      Data: " + ex.InnerException.Data);
                 */
 
+                // release semaphore lock
+                Globals.semaphore.Release();
+
                 if (ex.Response.StatusCode == HttpStatusCode.NotFound)
                 {
                     return StatusCode(StatusCodes.Status404NotFound);
                 }
             }
 
+            // release semaphore lock
+            Globals.semaphore.Release();
 
             return Ok();
         }
