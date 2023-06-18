@@ -82,7 +82,7 @@ namespace list.Controllers
         }
 
         /// <summary>
-        /// set list state 'suspend' or 'resume'
+        /// set list state to 'suspend' or 'resume'
         /// </summary>
         /// <param name="list"></param>
         /// <param name="state"></param>
