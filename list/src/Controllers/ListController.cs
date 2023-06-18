@@ -81,6 +81,12 @@ namespace list.Controllers
             return Ok(l.Spec.list);
         }
 
+        /// <summary>
+        /// set list state 'suspend' or 'resume'
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
         [HttpPatch()]
         public async Task<IActionResult> Patch(
             string list,
