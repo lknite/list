@@ -7,7 +7,7 @@ using System.Security.Claims;
 namespace list.Controllers
 {
     [ApiController]
-    [Route("block")]
+    [Route("message")]
     [Produces("application/json")]
     public class MessageController : ControllerBase
     {
