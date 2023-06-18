@@ -135,6 +135,10 @@ namespace list.Controllers
 
             // update state
             l.Spec.list.state = state;
+            if (state.Equals("resume"))
+            {
+                l.Spec.list.state = "active";
+            }
 
             try
             {
